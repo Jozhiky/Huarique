@@ -7,13 +7,20 @@
     background-color: #FAF7F2;
     color: #2D261E;
     -webkit-tap-highlight-color: transparent;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+}
+
+/* Ergonomic touch targets for tablet */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
 }
 
 /* Custom Soft Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: #F4EFE6;
@@ -27,7 +34,7 @@
   background: #C89B3C;
 }
 
-/* Print thermal receipt styling */
+/* Thermal receipt print styling */
 @media print {
   body * {
     visibility: hidden;

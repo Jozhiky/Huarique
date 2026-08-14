@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees, ArrowRight } from 'lucide-react';
+import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees } from 'lucide-react';
 
 export default function SalonesMap({ onSelectMesaForComanda }) {
   const { salones, mesas, salonSeleccionadoId, setSalonSeleccionadoId, cobrarMesa } = useStore();
@@ -46,12 +46,12 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       
       {/* Salones Selector Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-3xl border border-huarique-100 shadow-soft">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 bg-white p-5 sm:p-6 rounded-4xl border border-huarique-100 shadow-soft">
         
-        <div className="flex items-center space-x-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+        <div className="flex items-center space-x-3 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
           {salones.map((salon) => {
             const isSelected = salon.id === salonSeleccionadoId;
             const countOcupadas = mesas.filter(m => m.salonId === salon.id && m.estado !== 'libre').length;
@@ -59,25 +59,25 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
               <button
                 key={salon.id}
                 onClick={() => setSalonSeleccionadoId(salon.id)}
-                className={`flex items-center space-x-3 px-5 py-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all duration-200 ${
+                className={`flex items-center space-x-3.5 px-6 py-4 rounded-3xl font-extrabold text-sm whitespace-nowrap transition-all duration-200 active:scale-95 ${
                   isSelected
                     ? 'bg-huarique-500 text-white shadow-touch scale-[1.02]'
                     : 'bg-huarique-50 text-huarique-700 hover:bg-huarique-100 border border-huarique-200/60'
                 }`}
               >
-                <div className={`p-2 rounded-xl ${isSelected ? 'bg-white/20 text-white' : 'bg-huarique-100 text-huarique-700'}`}>
+                <div className={`p-2.5 rounded-2xl ${isSelected ? 'bg-white/20 text-white' : 'bg-huarique-100 text-huarique-700'}`}>
                   {getSalonIcon(salon.iconType)}
                 </div>
                 <div className="text-left">
-                  <div className="flex items-center space-x-1.5">
-                    <span>{salon.nombre}</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-base">{salon.nombre}</span>
                     {countOcupadas > 0 && (
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${isSelected ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'}`}>
+                      <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-black ${isSelected ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'}`}>
                         {countOcupadas} activas
                       </span>
                     )}
                   </div>
-                  <p className={`text-[11px] font-medium ${isSelected ? 'text-huarique-100' : 'text-huarique-500'}`}>
+                  <p className={`text-xs font-semibold mt-0.5 ${isSelected ? 'text-huarique-100' : 'text-huarique-500'}`}>
                     {salon.rito} ({salon.totalMesas} mesas)
                   </p>
                 </div>
@@ -87,10 +87,10 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
         </div>
 
         {/* Global Summary Badge */}
-        <div className="flex items-center space-x-3 bg-huarique-50 px-4 py-2.5 rounded-2xl border border-huarique-100 text-xs font-semibold">
+        <div className="flex items-center space-x-4 bg-huarique-50 px-5 py-3.5 rounded-3xl border border-huarique-100 text-xs font-bold">
           <div>
-            <span className="text-huarique-500">Ventas en Salón:</span>
-            <span className="ml-1 text-sm font-extrabold text-huarique-900">S/ {totalRecaudadoSalon.toFixed(2)}</span>
+            <span className="text-huarique-500">Consumo Acumulado Salón:</span>
+            <span className="ml-2 text-base font-black text-huarique-900">S/ {totalRecaudadoSalon.toFixed(2)}</span>
           </div>
         </div>
 
@@ -100,10 +100,10 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         
         {/* Status Pills */}
-        <div className="flex items-center space-x-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center space-x-2.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => setFilterEstado('todos')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+            className={`px-4 py-2.5 rounded-2xl text-xs font-extrabold transition ${
               filterEstado === 'todos'
                 ? 'bg-huarique-900 text-white shadow-sm'
                 : 'bg-white text-huarique-600 hover:bg-huarique-100 border border-huarique-200'
@@ -114,57 +114,57 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
           
           <button
             onClick={() => setFilterEstado('libre')}
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center space-x-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold transition ${
               filterEstado === 'libre'
                 ? 'bg-sage-500 text-white shadow-sm'
                 : 'bg-sage-50 text-sage-700 border border-sage-500/30 hover:bg-sage-100'
             }`}
           >
-            <span className="w-2 h-2 rounded-full bg-sage-500"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-sage-500"></span>
             <span>Libres ({totalLibres})</span>
           </button>
 
           <button
             onClick={() => setFilterEstado('ocupada')}
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center space-x-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold transition ${
               filterEstado === 'ocupada'
                 ? 'bg-amber-500 text-white shadow-sm'
                 : 'bg-amber-50 text-amber-700 border border-amber-500/30 hover:bg-amber-100'
             }`}
           >
-            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
             <span>Ocupadas ({totalOcupadas})</span>
           </button>
 
           <button
             onClick={() => setFilterEstado('por_pagar')}
-            className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center space-x-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold transition ${
               filterEstado === 'por_pagar'
                 ? 'bg-terracotta-500 text-white shadow-sm'
                 : 'bg-terracotta-50 text-terracotta-700 border border-terracotta-500/30 hover:bg-terracotta-100'
             }`}
           >
-            <span className="w-2 h-2 rounded-full bg-terracotta-500"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-terracotta-500"></span>
             <span>Por Pagar ({totalPorPagar})</span>
           </button>
         </div>
 
         {/* Search Bar */}
-        <div className="relative w-full sm:w-64">
-          <Search className="w-4 h-4 absolute left-3.5 top-3 text-huarique-400" />
+        <div className="relative w-full sm:w-72">
+          <Search className="w-4 h-4 absolute left-4 top-3.5 text-huarique-400" />
           <input
             type="text"
             placeholder="Buscar por número de mesa..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-2xl bg-white border border-huarique-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-huarique-400/40 text-huarique-900"
+            className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white border border-huarique-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-huarique-400/40 text-huarique-900 shadow-sm"
           />
         </div>
 
       </div>
 
-      {/* Mesas Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+      {/* Mesas Cards Grid (Breathable Layout) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5 sm:gap-6">
         {filteredMesas.map((mesa) => {
           const isLibre = mesa.estado === 'libre';
           const isOcupada = mesa.estado === 'ocupada';
@@ -172,7 +172,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
           return (
             <div
               key={mesa.id}
-              className={`group relative rounded-3xl p-4 transition-all duration-200 border flex flex-col justify-between hover:shadow-soft-lg ${
+              className={`group relative rounded-4xl p-5 sm:p-6 transition-all duration-200 border flex flex-col justify-between hover:shadow-soft-lg ${
                 isLibre
                   ? 'bg-white border-sage-500/20 hover:border-sage-500/50'
                   : isOcupada
@@ -181,8 +181,9 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
               }`}
             >
               
-              <div className="flex items-center justify-between mb-3">
-                <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-extrabold text-base shadow-sm transition ${
+              {/* Header: Table Number & Capacity */}
+              <div className="flex items-center justify-between mb-4">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg shadow-sm transition ${
                   isLibre
                     ? 'bg-sage-100 text-sage-700'
                     : isOcupada
@@ -192,15 +193,16 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                   M{mesa.numero}
                 </div>
 
-                <div className="flex items-center space-x-1 text-[11px] font-semibold text-huarique-500 bg-huarique-50 px-2 py-1 rounded-xl border border-huarique-100">
-                  <Users className="w-3 h-3 text-huarique-400" />
+                <div className="flex items-center space-x-1.5 text-xs font-bold text-huarique-600 bg-huarique-50 px-2.5 py-1.5 rounded-xl border border-huarique-100">
+                  <Users className="w-3.5 h-3.5 text-huarique-400" />
                   <span>{mesa.capacidad} p.</span>
                 </div>
               </div>
 
-              <div className="space-y-1.5 my-2">
+              {/* Status Info */}
+              <div className="space-y-2 my-2">
                 <div className="flex items-center justify-between">
-                  <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
+                  <span className={`text-[10px] uppercase font-black tracking-wider px-2.5 py-1 rounded-full ${
                     isLibre
                       ? 'bg-sage-100 text-sage-700'
                       : isOcupada
@@ -211,27 +213,28 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                   </span>
                   
                   {!isLibre && mesa.tiempoInicio && (
-                    <span className="text-[10px] text-huarique-500 font-medium flex items-center space-x-1">
-                      <Clock className="w-3 h-3 text-huarique-400" />
+                    <span className="text-[11px] text-huarique-500 font-semibold flex items-center space-x-1">
+                      <Clock className="w-3.5 h-3.5 text-huarique-400" />
                       <span>{getTimeElapsedStr(mesa.tiempoInicio)}</span>
                     </span>
                   )}
                 </div>
 
                 {!isLibre && (
-                  <div className="pt-1">
-                    <p className="text-xs text-huarique-500 font-medium">Consumo acumulado:</p>
-                    <p className="text-base font-extrabold text-huarique-900">
+                  <div className="pt-2">
+                    <p className="text-xs text-huarique-500 font-semibold">Consumo:</p>
+                    <p className="text-lg font-black text-huarique-900">
                       S/ {mesa.totalActual.toFixed(2)}
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="pt-3 border-t border-huarique-100/60 flex flex-col gap-1.5">
+              {/* Action Buttons */}
+              <div className="pt-4 border-t border-huarique-100/80 flex flex-col gap-2">
                 <button
                   onClick={() => onSelectMesaForComanda(mesa)}
-                  className={`w-full py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition active:scale-95 ${
+                  className={`w-full py-3 px-4 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2 transition active:scale-95 ${
                     isLibre
                       ? 'bg-sage-500 hover:bg-sage-600 text-white shadow-touch'
                       : 'bg-huarique-500 hover:bg-huarique-600 text-white shadow-touch'
@@ -239,12 +242,12 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                 >
                   {isLibre ? (
                     <>
-                      <PlusCircle className="w-3.5 h-3.5" />
+                      <PlusCircle className="w-4 h-4" />
                       <span>Tomar Pedido</span>
                     </>
                   ) : (
                     <>
-                      <Receipt className="w-3.5 h-3.5" />
+                      <Receipt className="w-4 h-4" />
                       <span>Ver / Agregar</span>
                     </>
                   )}
@@ -257,9 +260,9 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                         cobrarMesa(mesa.id);
                       }
                     }}
-                    className="w-full py-1.5 px-3 rounded-xl font-bold text-[11px] bg-huarique-100 hover:bg-huarique-200 text-huarique-800 transition flex items-center justify-center space-x-1"
+                    className="w-full py-2 px-3 rounded-2xl font-bold text-xs bg-huarique-100 hover:bg-huarique-200 text-huarique-800 transition flex items-center justify-center space-x-1.5"
                   >
-                    <CheckCircle className="w-3 h-3 text-sage-600" />
+                    <CheckCircle className="w-3.5 h-3.5 text-sage-600" />
                     <span>Cobrar y Liberar</span>
                   </button>
                 )}
