@@ -1,61 +1,60 @@
 /**
- * HUARIQUE DE CATACAOS - SYSTEM DESIGN TOKENS (WCAG AAA COMPLIANT)
- * Primary Color: Deep Royal Navy Blue (#113F67 - WCAG AAA 8.5:1)
- * Secondary Color: Logo Gold (#A16207 - WCAG AAA 7.2:1)
- * Background: Warm Earthenware Cream (#FAF8F5 - Comfortable for dining hall lighting)
+ * HUARIQUE DE CATACAOS - ERGONOMIC DESIGN TOKENS
+ * Canvas: Soothing Slate (#F8FAFC - Zero Eye Strain)
+ * Primary Text: Dark Slate (#0F172A - 16:1 Contrast Ratio)
+ * Primary Accent: Vibrant Ergonomic Royal Blue (#2563EB)
+ * Brand Accent: Warm Gold (#D97706)
  */
 
 export const DESIGN_TOKENS = {
   colors: {
-    // Primary: WCAG AAA Royal Navy Blue
     huarique: {
-      50: '#FAF8F5',  // Warm Cream Background
-      100: '#F1F5F9',
-      200: '#E2E8F0',
+      50: '#F8FAFC',  // Canvas Background
+      100: '#F1F5F9', // Card Soft Background
+      200: '#E2E8F0', // Border Neutral
       300: '#CBD5E1',
-      400: '#64748B',
-      500: '#113F67', // WCAG AAA Deep Royal Navy (#113F67)
-      600: '#0E3455',
-      700: '#0B2943',
-      800: '#081F33',
-      900: '#051422', // Deep Dark Text (14.8:1 AAA)
+      400: '#94A3B8', // Muted Subtitle Text
+      500: '#2563EB', // Primary Blue Accent
+      600: '#1D4ED8', // Primary Active Blue
+      700: '#1E40AF',
+      800: '#1E3A8A',
+      900: '#0F172A', // Crisp Dark Slate Text
     },
-    // Secondary: WCAG AAA Logo Gold
     gold: {
-      50: '#FEFCE8',
-      100: '#FEF9C3',
-      500: '#A16207', // Logo Gold (AAA 7.2:1)
-      600: '#854D0E',
+      50: '#FFFBEB',
+      100: '#FEF3C7',
+      500: '#D97706', // Catacaos Logo Gold
+      600: '#B45309',
     },
     sage: {
       50: '#F0FDF4',
       100: '#DCFCE7',
-      500: '#15803D', // Libre (AAA 7.5:1)
-      600: '#166534',
+      500: '#16A34A', // Libre Green
+      600: '#15803D',
     },
     amber: {
       50: '#FFFBEB',
       100: '#FEF3C7',
-      500: '#B45309', // Ocupada (AAA 7.1:1)
-      600: '#92400E',
+      500: '#D97706', // Ocupada Amber
+      600: '#B45309',
     },
     terracotta: {
-      50: '#FEF2F2',
-      100: '#FEE2E2',
-      500: '#B91C1C', // Por Pagar (AAA 7.4:1)
-      600: '#991B1B',
+      50: '#FFF1F2',
+      100: '#FFE4E6',
+      500: '#E11D48', // Por Pagar Rose/Coral
+      600: '#BE123C',
     }
   },
 
   typography: {
-    titleScreen: 'text-2xl sm:text-3xl font-black text-huarique-900 tracking-tight',
-    titleSection: 'text-lg sm:text-xl font-black text-huarique-900 tracking-tight',
-    titleCard: 'text-base sm:text-lg font-black text-huarique-900',
-    subtitle: 'text-xs sm:text-sm font-extrabold text-huarique-700',
-    bodyBold: 'text-xs sm:text-sm font-extrabold text-huarique-900',
-    bodyRegular: 'text-xs sm:text-sm font-semibold text-huarique-700',
-    caption: 'text-[11px] sm:text-xs font-bold text-huarique-600 uppercase tracking-wider',
-    metricNumber: 'text-2xl sm:text-3xl font-black text-huarique-900',
+    titleScreen: 'text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight',
+    titleSection: 'text-lg sm:text-xl font-bold text-slate-900 tracking-tight',
+    titleCard: 'text-base sm:text-lg font-bold text-slate-900',
+    subtitle: 'text-xs sm:text-sm font-semibold text-slate-500',
+    bodyBold: 'text-xs sm:text-sm font-bold text-slate-800',
+    bodyRegular: 'text-xs sm:text-sm font-medium text-slate-600',
+    caption: 'text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider',
+    metricNumber: 'text-2xl sm:text-3xl font-extrabold text-slate-900',
   },
 
   borderRadius: {
@@ -69,14 +68,14 @@ export const DESIGN_TOKENS = {
   touchTargets: {
     minHeight: 'min-h-[48px]',
     minWidth: 'min-w-[48px]',
-    buttonPrimary: 'py-3.5 px-5 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center space-x-2 transition active:scale-95 shadow-touch bg-huarique-500 hover:bg-huarique-600 text-white',
-    buttonSecondary: 'py-3 px-4 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2 transition active:scale-95 border border-huarique-200 bg-white text-huarique-900',
-    iconButton: 'w-11 h-11 rounded-2xl flex items-center justify-center transition active:scale-95 border',
+    buttonPrimary: 'py-3.5 px-5 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 transition active:scale-95 shadow-touch bg-blue-600 hover:bg-blue-700 text-white',
+    buttonSecondary: 'py-3 px-4 rounded-2xl font-semibold text-xs sm:text-sm flex items-center justify-center space-x-2 transition active:scale-95 border border-slate-200 bg-white text-slate-800 hover:bg-slate-50',
+    iconButton: 'w-11 h-11 rounded-2xl flex items-center justify-center transition active:scale-95 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50',
   },
 
   shadows: {
-    soft: 'shadow-[0_4px_20px_-2px_rgba(5,20,34,0.06)]',
-    cardHover: 'shadow-[0_10px_30px_-4px_rgba(5,20,34,0.12)]',
-    touch: 'shadow-[0_4px_14px_0_rgba(17,63,103,0.35)]',
+    soft: 'shadow-[0_2px_15px_-3px_rgba(15,23,42,0.05)]',
+    cardHover: 'shadow-[0_10px_25px_-5px_rgba(15,23,42,0.08)]',
+    touch: 'shadow-[0_4px_14px_0_rgba(37,99,235,0.25)]',
   }
 };

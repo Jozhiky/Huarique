@@ -32,31 +32,31 @@ export default function HeaderNavigation() {
   });
 
   return (
-    <header className="bg-white border-b border-huarique-100/90 sticky top-0 z-40 shadow-soft">
+    <header className="bg-white border-b border-slate-200/80 sticky top-0 z-40 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 sm:h-22 py-2.5">
+        <div className="flex items-center justify-between h-18 sm:h-20 py-2.5">
           
           {/* Logo & Brand Header */}
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-huarique-50 p-2 border border-huarique-200 shadow-inner flex items-center justify-center flex-shrink-0">
+            <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-amber-50 p-2 border border-amber-200/80 flex items-center justify-center flex-shrink-0">
               <img src="/logo.png" alt="Huarique de Catacaos" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h1 className="text-base sm:text-xl font-black text-huarique-900 leading-tight tracking-tight">
+              <h1 className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight tracking-tight">
                 HUARIQUE DE CATACAOS
               </h1>
-              <p className="text-xs font-bold text-huarique-500 flex items-center space-x-2 mt-0.5">
-                <span className="text-huarique-700 font-extrabold uppercase tracking-wider text-xs">
-                  {isOwner ? 'Vista Administrador' : 'Vista Mozo'}
+              <p className="text-xs font-medium text-slate-500 flex items-center space-x-2 mt-0.5">
+                <span className="text-amber-700 font-bold uppercase tracking-wider text-[11px]">
+                  {isOwner ? 'Administrador' : 'Mozo'}
                 </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-huarique-400"></span>
-                <span className="text-xs font-bold text-huarique-600">80 Mesas</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                <span>80 Mesas</span>
               </p>
             </div>
           </div>
 
-          {/* Navigation Tabs (High Contrast Tablet Buttons) */}
-          <nav className="hidden md:flex items-center space-x-2 bg-huarique-50/90 p-2 rounded-3xl border border-huarique-200">
+          {/* Navigation Tabs (Soft Soothing Active Blue Pill) */}
+          <nav className="hidden md:flex items-center space-x-1.5 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/60">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -64,13 +64,13 @@ export default function HeaderNavigation() {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center space-x-2.5 px-5 py-3 rounded-2xl font-black text-xs sm:text-sm transition-all duration-200 ${
+                  className={`flex items-center space-x-2 px-4.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 ${
                     isActive
-                      ? 'bg-white text-huarique-900 shadow-sm border border-huarique-200 scale-[1.02]'
-                      : 'text-huarique-600 hover:text-huarique-900 hover:bg-white/60'
+                      ? 'bg-blue-600 text-white shadow-touch scale-[1.01]'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
                   }`}
                 >
-                  <Icon className={`w-5 h-5 ${isActive ? 'text-huarique-500' : 'text-huarique-400'}`} />
+                  <Icon className={`w-4.5 h-4.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -78,39 +78,39 @@ export default function HeaderNavigation() {
           </nav>
 
           {/* Right Controls */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-2.5 sm:space-x-3">
             
             {/* Live Clock Badge */}
-            <div className="hidden lg:flex items-center space-x-2 text-xs sm:text-sm font-extrabold text-huarique-800 bg-huarique-50 px-3.5 py-2.5 rounded-2xl border border-huarique-100">
-              <Clock className="w-4 h-4 text-huarique-500" />
+            <div className="hidden lg:flex items-center space-x-2 text-xs font-bold text-slate-700 bg-slate-100/70 px-3.5 py-2 rounded-xl border border-slate-200/60">
+              <Clock className="w-4 h-4 text-slate-400" />
               <span>{timeStr}</span>
             </div>
 
             {/* Supabase status badge */}
             <div 
               title={isSupabaseConfigured ? 'Conectado a Supabase DB' : 'Modo Autónomo Local'}
-              className={`hidden sm:flex items-center space-x-2 text-xs font-extrabold px-3 py-2.5 rounded-2xl border ${
+              className={`hidden sm:flex items-center space-x-1.5 text-xs font-bold px-3 py-2 rounded-xl border ${
                 isSupabaseConfigured 
-                  ? 'bg-sage-50 text-sage-800 border-sage-500/30' 
-                  : 'bg-huarique-100 text-huarique-800 border-huarique-200'
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
+                  : 'bg-slate-100 text-slate-700 border-slate-200'
               }`}
             >
-              <Database className="w-4 h-4" />
-              <span>{isSupabaseConfigured ? 'Supabase DB' : 'Local DB'}</span>
+              <Database className="w-3.5 h-3.5" />
+              <span>{isSupabaseConfigured ? 'Supabase' : 'Local DB'}</span>
             </div>
 
-            {/* Active Mozo Pill Button */}
-            <div className="flex items-center space-x-2.5 bg-huarique-50 border border-huarique-200 rounded-3xl p-1.5 pr-3 shadow-sm">
-              <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center shadow-sm ${
-                isOwner ? 'bg-huarique-900 text-white' : 'bg-huarique-500 text-white'
+            {/* Active Mozo Badge */}
+            <div className="flex items-center space-x-2.5 bg-slate-50 border border-slate-200 rounded-2xl p-1.5 pr-3 shadow-xs">
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-extrabold text-xs flex items-center justify-center shadow-xs ${
+                isOwner ? 'bg-amber-600 text-white' : 'bg-blue-600 text-white'
               }`}>
                 {mozoActivo?.iniciales || 'MO'}
               </div>
               <div className="text-left hidden sm:block">
-                <p className="text-[10px] uppercase font-black text-huarique-500 tracking-wider">
+                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                   {isOwner ? 'Dueña' : 'Mozo'}
                 </p>
-                <p className="text-xs sm:text-sm font-black text-huarique-900 truncate max-w-[100px]">
+                <p className="text-xs font-bold text-slate-800 truncate max-w-[100px]">
                   {mozoActivo?.nombre || 'Mozo'}
                 </p>
               </div>
@@ -118,7 +118,7 @@ export default function HeaderNavigation() {
               <button
                 onClick={logout}
                 title="Cambiar Mozo / Bloquear Terminal"
-                className="p-2 text-huarique-400 hover:text-red-600 rounded-2xl hover:bg-white transition ml-1"
+                className="p-1.5 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-white transition ml-1"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -128,8 +128,8 @@ export default function HeaderNavigation() {
 
         </div>
 
-        {/* Mobile / Portrait Tablet Navigation Tabs */}
-        <div className="flex md:hidden items-center justify-between border-t border-huarique-100 py-2 space-x-1.5">
+        {/* Mobile / Tablet Navigation Tabs */}
+        <div className="flex md:hidden items-center justify-between border-t border-slate-100 py-2 space-x-1.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -137,13 +137,13 @@ export default function HeaderNavigation() {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex-1 flex items-center justify-center space-x-2 py-2.5 px-3 rounded-2xl text-xs sm:text-sm font-black transition ${
+                className={`flex-1 flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition ${
                   isActive
-                    ? 'bg-huarique-500 text-white shadow-touch'
-                    : 'text-huarique-700 bg-huarique-50 border border-huarique-100 hover:bg-huarique-100'
+                    ? 'bg-blue-600 text-white shadow-touch'
+                    : 'text-slate-700 bg-slate-100/80 border border-slate-200/60 hover:bg-slate-200/50'
                 }`}
               >
-                <Icon className={`w-4.5 h-4.5 ${isActive ? 'text-white' : 'text-huarique-500'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                 <span className="truncate">{item.label}</span>
               </button>
             );

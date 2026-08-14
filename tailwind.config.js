@@ -7,55 +7,52 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Primary Brand: WCAG AAA Compliant Deep Royal Blue (#113F67 / #0F4C81)
+        // Soothing Royal Marine Blue & Crisp Slate Canvas
         huarique: {
-          50: '#FAF8F5',  // Warm Earthenware Cream Background
-          100: '#F1F5F9', // Soft Neutral Tint
-          200: '#E2E8F0', // Border Neutral
+          50: '#F8FAFC',  // Soothing Slate Canvas (Zero Eye Strain)
+          100: '#F1F5F9', // Card Soft Background
+          200: '#E2E8F0', // Crisp Border
           300: '#CBD5E1',
-          400: '#64748B',
-          500: '#113F67', // WCAG AAA Deep Royal Navy (#113F67)
-          600: '#0E3455',
-          700: '#0B2943',
-          800: '#081F33',
-          900: '#051422', // Deepest Text Dark
+          400: '#94A3B8',
+          500: '#2563EB', // Vibrant Ergonomic Royal Blue
+          600: '#1D4ED8', // Primary Active Blue
+          700: '#1E40AF',
+          800: '#1E3A8A',
+          900: '#0F172A', // Crisp Dark Slate Text (High Contrast 16:1)
         },
-        // Secondary Brand: WCAG AAA Compliant Logo Gold (#A16207)
+        // Warm Gold Brand Accent (Catacaos Logo Accent)
         gold: {
-          50: '#FEFCE8',
-          100: '#FEF9C3',
-          200: '#FEF08A',
-          300: '#FDE047',
-          500: '#A16207', // Logo Gold (WCAG AAA Compliant > 7:1)
-          600: '#854D0E',
-          700: '#713F12',
-          800: '#542D0E',
-          900: '#3A1E0B',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          500: '#D97706', // Warm Gold Accent
+          600: '#B45309',
+          700: '#92400E',
         },
-        // Status Colors (WCAG AAA Compliant > 7:1 Contrast)
+        // Soft Ergonomic Status Colors
         sage: {
           50: '#F0FDF4',
           100: '#DCFCE7',
           200: '#BBF7D0',
-          500: '#15803D', // Libre (AAA Green)
-          600: '#166534',
-          700: '#14532D',
+          500: '#16A34A', // Libre Green
+          600: '#15803D',
+          700: '#166534',
         },
         amber: {
           50: '#FFFBEB',
           100: '#FEF3C7',
           200: '#FDE68A',
-          500: '#B45309', // Ocupada (AAA Amber)
-          600: '#92400E',
-          700: '#78350F',
+          500: '#D97706', // Ocupada Amber
+          600: '#B45309',
+          700: '#92400E',
         },
         terracotta: {
-          50: '#FEF2F2',
-          100: '#FEE2E2',
-          200: '#FECACA',
-          500: '#B91C1C', // Por Pagar (AAA Terracotta Red)
-          600: '#991B1B',
-          700: '#7F1D1D',
+          50: '#FFF1F2',
+          100: '#FFE4E6',
+          200: '#FECDD3',
+          500: '#E11D48', // Por Pagar Rose/Coral
+          600: '#BE123C',
+          700: '#9F1239',
         }
       },
       borderRadius: {
@@ -63,9 +60,9 @@ export default {
         '5xl': '2.5rem',
       },
       boxShadow: {
-        'soft': '0 4px 20px -2px rgba(5, 20, 34, 0.06)',
-        'soft-lg': '0 10px 30px -4px rgba(5, 20, 34, 0.12)',
-        'touch': '0 4px 14px 0 rgba(17, 63, 103, 0.35)',
+        'soft': '0 2px 15px -3px rgba(15, 23, 42, 0.05)',
+        'soft-lg': '0 10px 25px -5px rgba(15, 23, 42, 0.08)',
+        'touch': '0 4px 14px 0 rgba(37, 99, 235, 0.25)',
       }
     },
   },

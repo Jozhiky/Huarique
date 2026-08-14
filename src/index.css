@@ -2,61 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --primary-navy: #113F67;
-  --primary-navy-dark: #0E3455;
-  --secondary-gold: #A16207;
-  --bg-app: #FAF8F5;
-}
-
 @layer base {
   body {
-    background-color: var(--bg-app);
-    color: #051422;
-    @apply font-sans antialiased min-h-screen selection:bg-huarique-200 selection:text-huarique-900;
+    background-color: #F8FAFC;
+    color: #0F172A;
+    @apply font-sans antialiased min-h-screen selection:bg-blue-100 selection:text-blue-900;
   }
 }
 
-/* Force WCAG AAA Compliant Contrast Utility Overrides */
-.bg-huarique-500 {
-  background-color: #113F67 !important;
-  color: #FFFFFF !important;
-}
-
-.hover\:bg-huarique-600:hover {
-  background-color: #0E3455 !important;
-}
-
-.text-huarique-500 {
-  color: #113F67 !important;
-}
-
-.text-huarique-900 {
-  color: #051422 !important;
-}
-
-.border-huarique-500 {
-  border-color: #113F67 !important;
-}
-
-.bg-huarique-50 {
-  background-color: #FAF8F5 !important;
-}
-
-.bg-gold-500 {
-  background-color: #A16207 !important;
-  color: #FFFFFF !important;
-}
-
-.text-gold-500 {
-  color: #A16207 !important;
-}
-
-.border-gold-500 {
-  border-color: #A16207 !important;
-}
-
-/* Custom Ergonomic Touch Utilities */
+/* Ergonomic Touch Target Classes */
 .touch-target {
   min-height: 48px;
   min-width: 48px;
@@ -69,8 +23,8 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-none {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Thermal Printer 80mm Print Media Query Styles */
