@@ -87,7 +87,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                     {salon.rito}
                   </p>
 
-                  {/* Status Pills (Collision-Free Spacing) */}
+                  {/* Status Pills */}
                   <div className="flex items-center justify-between gap-2 my-4 p-3 bg-huarique-50/80 rounded-2xl border border-huarique-100 text-center">
                     <div className="flex-1">
                       <span className="block text-base sm:text-lg font-black text-sage-600">{totalLibres}</span>
@@ -123,7 +123,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   }
 
   // =========================================================================
-  // PASO 2: MAPA DE MESAS - ALTA LEGIBILIDAD & BOTONES GRANDES PARA TABLET
+  // PASO 2: MAPA DE MESAS - ALTA LEGIBILIDAD (SIN BADGE DE CONSUMO TOTAL ACUMULADO)
   // =========================================================================
   const currentSalon = salones.find(s => s.id === salonSeleccionadoId) || salones[0];
   const salonMesas = mesas.filter(m => m.salonId === currentSalon.id);
@@ -140,13 +140,12 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   const totalLibres = salonMesas.filter(m => m.estado === 'libre').length;
   const totalOcupadas = salonMesas.filter(m => m.estado === 'ocupada').length;
   const totalPorPagar = salonMesas.filter(m => m.estado === 'por_pagar').length;
-  const totalRecaudadoSalon = salonMesas.reduce((sum, m) => sum + (m.totalActual || 0), 0);
 
   return (
     <div className="space-y-4 sm:space-y-6">
       
-      {/* Top Salon Header */}
-      <div className="bg-white p-4 sm:p-5 rounded-3xl border border-huarique-100 shadow-soft flex flex-wrap items-center justify-between gap-3">
+      {/* Top Salon Header (Sin card de consumo total) */}
+      <div className="bg-white p-4 sm:p-5 rounded-3xl border border-huarique-100 shadow-soft flex items-center justify-between">
         <div className="flex items-center space-x-3 sm:space-x-4">
           <button
             onClick={() => setSalonSeleccionadoId(null)}
@@ -166,10 +165,9 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
           </div>
         </div>
 
-        <div className="flex items-center space-x-2 bg-huarique-50 px-4 py-2.5 rounded-2xl border border-huarique-200 text-xs sm:text-sm font-bold">
-          <span className="text-huarique-500 font-extrabold">Consumo:</span>
-          <span className="text-sm sm:text-base font-black text-huarique-900">S/ {totalRecaudadoSalon.toFixed(2)}</span>
-        </div>
+        <span className="text-xs sm:text-sm font-black text-huarique-700 bg-huarique-50 px-3.5 py-1.5 rounded-2xl border border-huarique-200">
+          {salonMesas.length} Mesas
+        </span>
       </div>
 
       {/* Filter and Search Bar */}
