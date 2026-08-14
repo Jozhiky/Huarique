@@ -101,7 +101,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
       {/* Main Modal Box */}
       <div className="bg-white w-full max-w-6xl h-[95vh] rounded-3xl sm:rounded-4xl shadow-soft-lg border border-huarique-100 flex flex-col lg:flex-row overflow-hidden relative z-10">
         
-        {/* UNIVERSAL TOP HEADER (Always Visible with Big Close Button X) */}
+        {/* UNIVERSAL TOP HEADER */}
         <div className="lg:hidden bg-white px-4 py-3 border-b border-huarique-100 flex items-center justify-between shadow-sm flex-shrink-0">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-2xl bg-huarique-500 text-white font-black text-base flex items-center justify-center shadow-touch">
@@ -118,7 +118,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
           </div>
 
           <div className="flex items-center space-x-2">
-            {/* Tab Swapper for Mobile/Portrait Tablet */}
+            {/* Tab Swapper */}
             <div className="flex bg-huarique-100 p-1 rounded-xl">
               <button
                 onClick={() => setActiveMobileTab('menu')}
@@ -154,7 +154,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
           </div>
         </div>
 
-        {/* LEFT PANEL: Dish Menu Catalog (Visible when activeMobileTab === 'menu' on small screens, or always on lg screens) */}
+        {/* LEFT PANEL: Dish Menu Catalog */}
         <div className={`flex-1 flex-col h-full bg-huarique-50/40 p-4 sm:p-6 overflow-hidden border-b lg:border-b-0 lg:border-r border-huarique-100 ${
           activeMobileTab === 'menu' ? 'flex' : 'hidden lg:flex'
         }`}>
@@ -206,13 +206,13 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
             </div>
           </div>
 
-          {/* Dishes Cards Grid */}
-          <div className="flex-1 overflow-y-auto pr-1 grid grid-cols-1 sm:grid-cols-2 gap-3 min-h-0">
+          {/* Dishes Cards Grid (Fix: content-start items-start prevents vertical stretching) */}
+          <div className="flex-1 overflow-y-auto pr-1 grid grid-cols-1 sm:grid-cols-2 gap-3 content-start items-start min-h-0">
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
                 onClick={() => handleAddToCart(product)}
-                className="bg-white p-3.5 rounded-2xl border border-huarique-100 hover:border-huarique-400 shadow-sm hover:shadow-soft transition cursor-pointer flex items-center justify-between group active:scale-[0.98]"
+                className="bg-white p-3.5 rounded-2xl border border-huarique-100 hover:border-huarique-400 shadow-sm hover:shadow-soft transition cursor-pointer flex items-center justify-between group active:scale-[0.98] h-auto"
               >
                 <div className="flex items-center space-x-3 flex-1 min-w-0 pr-2">
                   <div className="w-10 h-10 rounded-xl bg-huarique-50 border border-huarique-100 flex items-center justify-center text-huarique-600 flex-shrink-0">
@@ -231,7 +231,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
                   </div>
                 </div>
 
-                <div className="w-8 h-8 rounded-xl bg-huarique-50 group-hover:bg-huarique-500 group-hover:text-white text-huarique-700 flex items-center justify-center font-black text-lg transition shadow-sm">
+                <div className="w-8 h-8 rounded-xl bg-huarique-50 group-hover:bg-huarique-500 group-hover:text-white text-huarique-700 flex items-center justify-center font-black text-lg transition shadow-sm flex-shrink-0">
                   +
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
 
         </div>
 
-        {/* RIGHT PANEL: Order Cart Summary (Visible when activeMobileTab === 'carrito' on small screens, or always on lg screens) */}
+        {/* RIGHT PANEL: Order Cart Summary */}
         <div className={`w-full lg:w-[400px] flex-col h-full bg-white p-4 sm:p-6 justify-between relative flex-shrink-0 ${
           activeMobileTab === 'carrito' ? 'flex' : 'hidden lg:flex'
         }`}>
