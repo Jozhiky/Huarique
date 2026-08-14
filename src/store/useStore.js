@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// Initial Mozos (Waiters)
+// Initial Mozos
 const INITIAL_MOZOS = [
   { id: 'm1', nombre: 'Juan Pérez', pin: '123456', rol: 'mozo', iniciales: 'JP' },
   { id: 'm2', nombre: 'María Santos', pin: '654321', rol: 'mozo', iniciales: 'MS' },
@@ -11,9 +11,30 @@ const INITIAL_MOZOS = [
 
 // Initial 3 Salones
 const INITIAL_SALONES = [
-  { id: 's1', nombre: 'Salón Principal Catacaos', totalMesas: 30, rito: 'Mesas 1 a 30', iconType: 'building' },
-  { id: 's2', nombre: 'Salón Chichería & Patio', totalMesas: 25, rito: 'Mesas 31 a 55', iconType: 'wine' },
-  { id: 's3', nombre: 'Salón Terraza VIP', totalMesas: 25, rito: 'Mesas 56 a 80', iconType: 'tree' },
+  { 
+    id: 's1', 
+    nombre: 'Salón Principal Catacaos', 
+    totalMesas: 30, 
+    rito: 'Mesas 1 a 30', 
+    iconType: 'building',
+    descripcion: 'Amplio comedor central tradicional para familias y grupos grandes'
+  },
+  { 
+    id: 's2', 
+    nombre: 'Salón Chichería & Patio', 
+    totalMesas: 25, 
+    rito: 'Mesas 31 a 55', 
+    iconType: 'wine',
+    descripcion: 'Ambiente rústico de patio catacaos y atención al paso' 
+  },
+  { 
+    id: 's3', 
+    nombre: 'Salón Terraza VIP', 
+    totalMesas: 25, 
+    rito: 'Mesas 56 a 80', 
+    iconType: 'tree',
+    descripcion: 'Espacio exclusivo ventilado con vista panorámica' 
+  },
 ];
 
 // Generate 80 tables
@@ -61,7 +82,7 @@ const generateInitialMesas = () => {
   return mesas;
 };
 
-// Menu Products (Catacaos Specialty)
+// Menu Products
 const INITIAL_PRODUCTOS = [
   { id: 'p1', nombre: 'Seco de Chabelo Catacaos', categoria: 'Entradas', precio: 32.00, descripcion: 'Plátano verde majado con carne aliñada y aderezo criollo' },
   { id: 'p2', nombre: 'Majado de Yuca con Chicharrón', categoria: 'Entradas', precio: 28.00, descripcion: 'Yuca piurana machacada con chicharrón crujiente' },
@@ -198,7 +219,7 @@ export const useStore = create(
       insumos: INITIAL_INSUMOS,
       kardex: INITIAL_KARDEX,
       
-      salonSeleccionadoId: 's1',
+      salonSeleccionadoId: null, // Start with Salon Selection step!
       activeTab: 'salones',
       mesaSeleccionada: null,
       ticketImprimir: null,
@@ -206,21 +227,19 @@ export const useStore = create(
       loginWithPin: (pin) => {
         const found = get().mozos.find(m => m.pin === pin);
         if (found) {
-          // Set active tab based on role
           const defaultTab = found.rol === 'duena' ? 'duena' : 'salones';
-          set({ mozoActivo: found, isAuthenticated: true, activeTab: defaultTab });
+          set({ mozoActivo: found, isAuthenticated: true, activeTab: defaultTab, salonSeleccionadoId: null });
           return { success: true, mozo: found };
         }
         return { success: false, message: 'PIN incorrecto. Verifica los dígitos asignados.' };
       },
 
-      logout: () => set({ isAuthenticated: false, mozoActivo: null }),
+      logout: () => set({ isAuthenticated: false, mozoActivo: null, salonSeleccionadoId: null }),
 
       setSalonSeleccionadoId: (id) => set({ salonSeleccionadoId: id }),
       
       setActiveTab: (tab) => {
         const state = get();
-        // RBAC Guard: Mozos can ONLY access 'salones' and 'cocina'
         if (state.mozoActivo?.rol === 'mozo' && (tab === 'duena' || tab === 'inventario')) {
           set({ activeTab: 'salones' });
           return;
@@ -386,7 +405,7 @@ export const useStore = create(
       }
     }),
     {
-      name: 'huarique-catacaos-storage-v3',
+      name: 'huarique-catacaos-storage-v4',
     }
   )
 );

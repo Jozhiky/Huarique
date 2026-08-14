@@ -1,12 +1,140 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees } from 'lucide-react';
+import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function SalonesMap({ onSelectMesaForComanda }) {
   const { salones, mesas, salonSeleccionadoId, setSalonSeleccionadoId, cobrarMesa } = useStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterEstado, setFilterEstado] = useState('todos');
 
+  const getSalonIcon = (iconType) => {
+    switch (iconType) {
+      case 'wine':
+        return <Wine className="w-8 h-8 text-huarique-600" />;
+      case 'tree':
+        return <Trees className="w-8 h-8 text-huarique-600" />;
+      case 'building':
+      default:
+        return <Building2 className="w-8 h-8 text-huarique-600" />;
+    }
+  };
+
+  const getTimeElapsedStr = (isoTime) => {
+    if (!isoTime) return '';
+    const minutes = Math.floor((Date.now() - new Date(isoTime).getTime()) / 60000);
+    if (minutes < 1) return 'Hace un momento';
+    if (minutes < 60) return `Hace ${minutes} min`;
+    const hours = Math.floor(minutes / 60);
+    return `Hace ${hours}h ${minutes % 60}m`;
+  };
+
+  // =========================================================================
+  // PASO 1: VISTA DE SELECCIÓN DE LOS 3 SALONES
+  // =========================================================================
+  if (!salonSeleccionadoId) {
+    return (
+      <div className="space-y-8 py-4">
+        
+        {/* Banner Header */}
+        <div className="bg-white p-6 sm:p-8 rounded-4xl border border-huarique-100 shadow-soft text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <span className="px-3 py-1 bg-huarique-50 text-huarique-800 text-xs font-black rounded-full uppercase tracking-wider border border-huarique-200">
+              Paso 1 de 2
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-huarique-900 leading-tight mt-2">
+              Selecciona el Salón a Atender
+            </h2>
+            <p className="text-sm font-semibold text-huarique-500 mt-1">
+              Elige entre los 3 salones del restaurante para ver el mapa de mesas en tiempo real
+            </p>
+          </div>
+
+          <div className="bg-huarique-50 px-5 py-3.5 rounded-3xl border border-huarique-100 text-xs font-bold text-huarique-700 whitespace-nowrap">
+            Capacidad Total: <span className="text-base font-black text-huarique-900">80 Mesas</span>
+          </div>
+        </div>
+
+        {/* 3 Salones Big Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {salones.map((salon) => {
+            const salonMesas = mesas.filter(m => m.salonId === salon.id);
+            const totalLibres = salonMesas.filter(m => m.estado === 'libre').length;
+            const totalOcupadas = salonMesas.filter(m => m.estado === 'ocupada').length;
+            const totalPorPagar = salonMesas.filter(m => m.estado === 'por_pagar').length;
+            const totalConsumo = salonMesas.reduce((sum, m) => sum + (m.totalActual || 0), 0);
+
+            return (
+              <div
+                key={salon.id}
+                onClick={() => setSalonSeleccionadoId(salon.id)}
+                className="bg-white rounded-4xl border border-huarique-100/90 p-6 sm:p-8 shadow-soft hover:shadow-soft-lg transition-all duration-300 cursor-pointer flex flex-col justify-between group border-2 hover:border-huarique-400/80 active:scale-[0.98]"
+              >
+                <div>
+                  
+                  {/* Top Icon & Badge */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-16 h-16 rounded-3xl bg-huarique-50 p-3.5 border border-huarique-200/80 flex items-center justify-center group-hover:bg-huarique-500 group-hover:text-white transition shadow-sm">
+                      {getSalonIcon(salon.iconType)}
+                    </div>
+                    <span className="px-3.5 py-1.5 rounded-full text-xs font-black bg-huarique-50 text-huarique-800 border border-huarique-100">
+                      {salon.totalMesas} Mesas
+                    </span>
+                  </div>
+
+                  {/* Title & Description */}
+                  <h3 className="text-xl font-black text-huarique-900 group-hover:text-huarique-600 transition">
+                    {salon.nombre}
+                  </h3>
+                  <p className="text-xs text-huarique-500 font-semibold mt-1 line-clamp-2">
+                    {salon.descripcion}
+                  </p>
+                  <p className="text-[11px] text-huarique-400 font-bold uppercase tracking-wider mt-2">
+                    {salon.rito}
+                  </p>
+
+                  {/* Status Metrics */}
+                  <div className="grid grid-cols-3 gap-2 my-6 p-3 bg-huarique-50/70 rounded-2xl border border-huarique-100 text-center text-xs">
+                    <div>
+                      <span className="block text-base font-black text-sage-600">{totalLibres}</span>
+                      <span className="text-[10px] font-bold text-huarique-500">Libres</span>
+                    </div>
+                    <div>
+                      <span className="block text-base font-black text-amber-600">{totalOcupadas}</span>
+                      <span className="text-[10px] font-bold text-huarique-500">Ocupadas</span>
+                    </div>
+                    <div>
+                      <span className="block text-base font-black text-terracotta-600">{totalPorPagar}</span>
+                      <span className="text-[10px] font-bold text-huarique-500">Por Pagar</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Bottom Action Button */}
+                <div className="pt-4 border-t border-huarique-100/80 flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-huarique-400 block">Acumulado Salón:</span>
+                    <span className="text-sm font-black text-huarique-900">S/ {totalConsumo.toFixed(2)}</span>
+                  </div>
+
+                  <button className="py-3 px-5 rounded-2xl bg-huarique-500 group-hover:bg-huarique-600 text-white font-extrabold text-xs flex items-center space-x-2 shadow-touch transition">
+                    <span>Ingresar</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // PASO 2: VISTA DE MESAS DEL SALÓN SELECCIONADO
+  // =========================================================================
   const currentSalon = salones.find(s => s.id === salonSeleccionadoId) || salones[0];
   const salonMesas = mesas.filter(m => m.salonId === currentSalon.id);
 
@@ -24,72 +152,36 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   const totalPorPagar = salonMesas.filter(m => m.estado === 'por_pagar').length;
   const totalRecaudadoSalon = salonMesas.reduce((sum, m) => sum + (m.totalActual || 0), 0);
 
-  const getTimeElapsedStr = (isoTime) => {
-    if (!isoTime) return '';
-    const minutes = Math.floor((Date.now() - new Date(isoTime).getTime()) / 60000);
-    if (minutes < 1) return 'Hace un momento';
-    if (minutes < 60) return `Hace ${minutes} min`;
-    const hours = Math.floor(minutes / 60);
-    return `Hace ${hours}h ${minutes % 60}m`;
-  };
-
-  const getSalonIcon = (iconType) => {
-    switch (iconType) {
-      case 'wine':
-        return <Wine className="w-5 h-5" />;
-      case 'tree':
-        return <Trees className="w-5 h-5" />;
-      case 'building':
-      default:
-        return <Building2 className="w-5 h-5" />;
-    }
-  };
-
   return (
     <div className="space-y-6 sm:space-y-8">
       
-      {/* Salones Selector Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 bg-white p-5 sm:p-6 rounded-4xl border border-huarique-100 shadow-soft">
+      {/* Header Bar with Back Button & Salon Info */}
+      <div className="bg-white p-5 sm:p-6 rounded-4xl border border-huarique-100 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
         
-        <div className="flex items-center space-x-3 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-          {salones.map((salon) => {
-            const isSelected = salon.id === salonSeleccionadoId;
-            const countOcupadas = mesas.filter(m => m.salonId === salon.id && m.estado !== 'libre').length;
-            return (
-              <button
-                key={salon.id}
-                onClick={() => setSalonSeleccionadoId(salon.id)}
-                className={`flex items-center space-x-3.5 px-6 py-4 rounded-3xl font-extrabold text-sm whitespace-nowrap transition-all duration-200 active:scale-95 ${
-                  isSelected
-                    ? 'bg-huarique-500 text-white shadow-touch scale-[1.02]'
-                    : 'bg-huarique-50 text-huarique-700 hover:bg-huarique-100 border border-huarique-200/60'
-                }`}
-              >
-                <div className={`p-2.5 rounded-2xl ${isSelected ? 'bg-white/20 text-white' : 'bg-huarique-100 text-huarique-700'}`}>
-                  {getSalonIcon(salon.iconType)}
-                </div>
-                <div className="text-left">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-base">{salon.nombre}</span>
-                    {countOcupadas > 0 && (
-                      <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-black ${isSelected ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800'}`}>
-                        {countOcupadas} activas
-                      </span>
-                    )}
-                  </div>
-                  <p className={`text-xs font-semibold mt-0.5 ${isSelected ? 'text-huarique-100' : 'text-huarique-500'}`}>
-                    {salon.rito} ({salon.totalMesas} mesas)
-                  </p>
-                </div>
-              </button>
-            );
-          })}
+        {/* Back Button & Salon Title */}
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setSalonSeleccionadoId(null)}
+            className="flex items-center space-x-2 px-4 py-3 rounded-2xl bg-huarique-100 hover:bg-huarique-200 text-huarique-900 font-extrabold text-xs transition active:scale-95 border border-huarique-200"
+          >
+            <ArrowLeft className="w-4 h-4 text-huarique-700" />
+            <span>Volver a Salones</span>
+          </button>
+
+          <div>
+            <h2 className="text-xl sm:text-2xl font-black text-huarique-900 leading-tight flex items-center space-x-2">
+              <span>{currentSalon.nombre}</span>
+            </h2>
+            <p className="text-xs font-semibold text-huarique-500">
+              {currentSalon.rito} ({currentSalon.totalMesas} mesas totales)
+            </p>
+          </div>
         </div>
 
-        {/* Global Summary Badge */}
-        <div className="flex items-center space-x-4 bg-huarique-50 px-5 py-3.5 rounded-3xl border border-huarique-100 text-xs font-bold">
+        {/* Consumo Acumulado */}
+        <div className="flex items-center space-x-4 bg-huarique-50 px-5 py-3 rounded-3xl border border-huarique-100 text-xs font-bold">
           <div>
-            <span className="text-huarique-500">Consumo Acumulado Salón:</span>
+            <span className="text-huarique-500">Consumo Acumulado:</span>
             <span className="ml-2 text-base font-black text-huarique-900">S/ {totalRecaudadoSalon.toFixed(2)}</span>
           </div>
         </div>
@@ -163,7 +255,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
 
       </div>
 
-      {/* Mesas Cards Grid (Breathable Layout) */}
+      {/* Mesas Cards Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5 sm:gap-6">
         {filteredMesas.map((mesa) => {
           const isLibre = mesa.estado === 'libre';
@@ -181,7 +273,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
               }`}
             >
               
-              {/* Header: Table Number & Capacity */}
+              {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg shadow-sm transition ${
                   isLibre
