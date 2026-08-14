@@ -4,58 +4,44 @@
 
 @layer base {
   body {
-    background-color: #FAF7F2;
-    color: #2D261E;
-    -webkit-tap-highlight-color: transparent;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    @apply bg-huarique-50 text-huarique-900 font-sans antialiased min-h-screen selection:bg-huarique-200 selection:text-huarique-900;
   }
 }
 
-/* Ergonomic touch targets for tablet */
+/* Custom Ergonomic Touch Utilities */
 .touch-target {
   min-height: 48px;
   min-width: 48px;
 }
 
-/* Custom Soft Scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #F4EFE6;
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb {
-  background: #D2A752;
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #C89B3C;
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
-/* Thermal receipt print styling */
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Thermal Printer 80mm Print Media Query Styles */
 @media print {
   body * {
     visibility: hidden;
   }
-  #printable-comanda, #printable-comanda * {
+  #thermal-ticket-print, #thermal-ticket-print * {
     visibility: visible;
   }
-  #printable-comanda {
+  #thermal-ticket-print {
     position: absolute;
     left: 0;
     top: 0;
     width: 80mm;
     margin: 0;
-    padding: 10px;
-    background: white;
-    color: black;
+    padding: 2mm;
     font-family: 'Courier New', Courier, monospace;
     font-size: 12px;
-  }
-  @page {
-    size: 80mm auto;
-    margin: 0;
+    line-height: 1.2;
   }
 }

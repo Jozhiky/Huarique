@@ -47,16 +47,16 @@ export default function LoginScreen() {
   return (
     <div className="min-h-screen bg-huarique-50 flex items-center justify-center p-3 sm:p-6 relative overflow-hidden font-sans select-none">
       
-      {/* Background Subtle Spheres */}
-      <div className="absolute -top-24 -left-24 w-80 h-80 bg-huarique-300/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-huarique-400/20 rounded-full blur-3xl pointer-events-none"></div>
+      {/* Background Subtle Royal Blue Spheres */}
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-huarique-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-gold-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-      {/* Main Login Card - Responsive Mobile & Tablet */}
+      {/* Main Login Card - Royal Blue & Logo Gold Header */}
       <div className="w-full max-w-md bg-white rounded-3xl sm:rounded-4xl shadow-soft-lg border border-huarique-100 p-5 sm:p-8 relative z-10 space-y-4 sm:space-y-6">
         
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-huarique-50 rounded-2xl sm:rounded-3xl mx-auto flex items-center justify-center p-2 border border-huarique-200/80 shadow-inner">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-huarique-50 rounded-2xl sm:rounded-3xl mx-auto flex items-center justify-center p-2 border-2 border-gold-500/40 shadow-inner">
             <img src="/logo.png" alt="Huarique de Catacaos" className="w-full h-full object-contain" />
           </div>
           <div>
@@ -71,7 +71,7 @@ export default function LoginScreen() {
 
         {/* User Badges Grid */}
         <div>
-          <label className="block text-[11px] font-extrabold text-huarique-600 uppercase tracking-wider text-center mb-2">
+          <label className="block text-[11px] font-extrabold text-huarique-700 uppercase tracking-wider text-center mb-2">
             Selecciona tu usuario:
           </label>
           <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
@@ -93,8 +93,8 @@ export default function LoginScreen() {
                 >
                   <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-extrabold text-xs shadow-sm flex-shrink-0 ${
                     m.rol === 'duena' 
-                      ? 'bg-huarique-500 text-white' 
-                      : 'bg-huarique-100 text-huarique-800'
+                      ? 'bg-gold-500 text-white' 
+                      : 'bg-huarique-500 text-white'
                   }`}>
                     {m.iniciales}
                   </div>
@@ -181,7 +181,7 @@ export default function LoginScreen() {
         <div className="text-center text-[10px] sm:text-[11px] text-huarique-400 font-medium pt-1">
           <p className="flex items-center justify-center space-x-1">
             <ShieldCheck className="w-3.5 h-3.5 text-huarique-500" />
-            <span>Terminal Móvil & Tablet (3 Salones - 80 Mesas)</span>
+            <span>Terminal Móvil & Tablet (Royal Blue & Logo Gold)</span>
           </p>
         </div>
 
