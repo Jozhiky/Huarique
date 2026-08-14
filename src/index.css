@@ -2,10 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary-blue: #1552A0;
+  --primary-blue-dark: #114389;
+  --secondary-gold: #C89B3C;
+  --bg-app: #F0F5FD;
+}
+
 @layer base {
   body {
-    @apply bg-huarique-50 text-huarique-900 font-sans antialiased min-h-screen selection:bg-huarique-200 selection:text-huarique-900;
+    background-color: var(--bg-app);
+    color: #061630;
+    @apply font-sans antialiased min-h-screen selection:bg-huarique-200 selection:text-huarique-900;
   }
+}
+
+/* Force Primary Royal Blue & Secondary Gold Theme Overrides */
+.bg-huarique-500 {
+  background-color: #1552A0 !important;
+}
+
+.hover\:bg-huarique-600:hover {
+  background-color: #114389 !important;
+}
+
+.text-huarique-500 {
+  color: #1552A0 !important;
+}
+
+.border-huarique-500 {
+  border-color: #1552A0 !important;
+}
+
+.bg-huarique-50 {
+  background-color: #F0F5FD !important;
+}
+
+.bg-gold-500 {
+  background-color: #C89B3C !important;
+}
+
+.text-gold-500 {
+  color: #C89B3C !important;
+}
+
+.border-gold-500 {
+  border-color: #C89B3C !important;
 }
 
 /* Custom Ergonomic Touch Utilities */
