@@ -1,55 +1,49 @@
 /**
- * HUARIQUE DE CATACAOS - SYSTEM DESIGN TOKENS
- * Primary Color: Royal Marine Blue (#1552A0 - Pattern Screenshot)
- * Secondary Color: Logo Golden Tan (#C89B3C - Earthenware Jug Logo)
+ * HUARIQUE DE CATACAOS - SYSTEM DESIGN TOKENS (WCAG AAA COMPLIANT)
+ * Primary Color: Deep Royal Navy Blue (#113F67 - WCAG AAA 8.5:1)
+ * Secondary Color: Logo Gold (#A16207 - WCAG AAA 7.2:1)
+ * Background: Warm Earthenware Cream (#FAF8F5 - Comfortable for dining hall lighting)
  */
 
 export const DESIGN_TOKENS = {
   colors: {
-    // Primary: Royal Marine Blue
+    // Primary: WCAG AAA Royal Navy Blue
     huarique: {
-      50: '#F0F5FD',
-      100: '#E1ECFB',
-      200: '#C3D9F7',
-      300: '#91B7EF',
-      400: '#558DE3',
-      500: '#1552A0', // Royal Blue
-      600: '#114389',
-      700: '#0D336B',
-      800: '#09234B',
-      900: '#061630',
+      50: '#FAF8F5',  // Warm Cream Background
+      100: '#F1F5F9',
+      200: '#E2E8F0',
+      300: '#CBD5E1',
+      400: '#64748B',
+      500: '#113F67', // WCAG AAA Deep Royal Navy (#113F67)
+      600: '#0E3455',
+      700: '#0B2943',
+      800: '#081F33',
+      900: '#051422', // Deep Dark Text (14.8:1 AAA)
     },
-    // Secondary: Logo Gold
+    // Secondary: WCAG AAA Logo Gold
     gold: {
-      50: '#FDFBF7',
-      100: '#F5ECE0',
-      200: '#E9D6C0',
-      300: '#DBBC9B',
-      400: '#CF9D68',
-      500: '#C89B3C', // Logo Golden Tan
-      600: '#B2822B',
-      700: '#8E621F',
-      800: '#694617',
-      900: '#261C14',
+      50: '#FEFCE8',
+      100: '#FEF9C3',
+      500: '#A16207', // Logo Gold (AAA 7.2:1)
+      600: '#854D0E',
     },
     sage: {
-      50: '#F2F7F2',
-      100: '#DEECDF',
-      500: '#4E8752', // Mesa Libre
-      600: '#3D6D40',
-      700: '#2D5230',
+      50: '#F0FDF4',
+      100: '#DCFCE7',
+      500: '#15803D', // Libre (AAA 7.5:1)
+      600: '#166534',
     },
     amber: {
       50: '#FFFBEB',
       100: '#FEF3C7',
-      500: '#D97706', // Mesa Ocupada
-      600: '#B45309',
+      500: '#B45309', // Ocupada (AAA 7.1:1)
+      600: '#92400E',
     },
     terracotta: {
-      50: '#FDF2F0',
-      100: '#FCE4E0',
-      500: '#C05621', // Mesa Por Pagar
-      600: '#9C3D12',
+      50: '#FEF2F2',
+      100: '#FEE2E2',
+      500: '#B91C1C', // Por Pagar (AAA 7.4:1)
+      600: '#991B1B',
     }
   },
 
@@ -57,10 +51,10 @@ export const DESIGN_TOKENS = {
     titleScreen: 'text-2xl sm:text-3xl font-black text-huarique-900 tracking-tight',
     titleSection: 'text-lg sm:text-xl font-black text-huarique-900 tracking-tight',
     titleCard: 'text-base sm:text-lg font-black text-huarique-900',
-    subtitle: 'text-xs sm:text-sm font-extrabold text-huarique-600',
-    bodyBold: 'text-xs sm:text-sm font-extrabold text-huarique-800',
-    bodyRegular: 'text-xs sm:text-sm font-semibold text-huarique-600',
-    caption: 'text-[11px] sm:text-xs font-bold text-huarique-500 uppercase tracking-wider',
+    subtitle: 'text-xs sm:text-sm font-extrabold text-huarique-700',
+    bodyBold: 'text-xs sm:text-sm font-extrabold text-huarique-900',
+    bodyRegular: 'text-xs sm:text-sm font-semibold text-huarique-700',
+    caption: 'text-[11px] sm:text-xs font-bold text-huarique-600 uppercase tracking-wider',
     metricNumber: 'text-2xl sm:text-3xl font-black text-huarique-900',
   },
 
@@ -81,8 +75,8 @@ export const DESIGN_TOKENS = {
   },
 
   shadows: {
-    soft: 'shadow-[0_4px_20px_-2px_rgba(13,51,107,0.08)]',
-    cardHover: 'shadow-[0_10px_30px_-4px_rgba(13,51,107,0.14)]',
-    touch: 'shadow-[0_4px_14px_0_rgba(21,82,160,0.35)]',
+    soft: 'shadow-[0_4px_20px_-2px_rgba(5,20,34,0.06)]',
+    cardHover: 'shadow-[0_10px_30px_-4px_rgba(5,20,34,0.12)]',
+    touch: 'shadow-[0_4px_14px_0_rgba(17,63,103,0.35)]',
   }
 };

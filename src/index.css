@@ -3,51 +3,57 @@
 @tailwind utilities;
 
 :root {
-  --primary-blue: #1552A0;
-  --primary-blue-dark: #114389;
-  --secondary-gold: #C89B3C;
-  --bg-app: #F0F5FD;
+  --primary-navy: #113F67;
+  --primary-navy-dark: #0E3455;
+  --secondary-gold: #A16207;
+  --bg-app: #FAF8F5;
 }
 
 @layer base {
   body {
     background-color: var(--bg-app);
-    color: #061630;
+    color: #051422;
     @apply font-sans antialiased min-h-screen selection:bg-huarique-200 selection:text-huarique-900;
   }
 }
 
-/* Force Primary Royal Blue & Secondary Gold Theme Overrides */
+/* Force WCAG AAA Compliant Contrast Utility Overrides */
 .bg-huarique-500 {
-  background-color: #1552A0 !important;
+  background-color: #113F67 !important;
+  color: #FFFFFF !important;
 }
 
 .hover\:bg-huarique-600:hover {
-  background-color: #114389 !important;
+  background-color: #0E3455 !important;
 }
 
 .text-huarique-500 {
-  color: #1552A0 !important;
+  color: #113F67 !important;
+}
+
+.text-huarique-900 {
+  color: #051422 !important;
 }
 
 .border-huarique-500 {
-  border-color: #1552A0 !important;
+  border-color: #113F67 !important;
 }
 
 .bg-huarique-50 {
-  background-color: #F0F5FD !important;
+  background-color: #FAF8F5 !important;
 }
 
 .bg-gold-500 {
-  background-color: #C89B3C !important;
+  background-color: #A16207 !important;
+  color: #FFFFFF !important;
 }
 
 .text-gold-500 {
-  color: #C89B3C !important;
+  color: #A16207 !important;
 }
 
 .border-gold-500 {
-  border-color: #C89B3C !important;
+  border-color: #A16207 !important;
 }
 
 /* Custom Ergonomic Touch Utilities */

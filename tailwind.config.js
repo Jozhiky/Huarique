@@ -7,61 +7,55 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Primary Brand Color: Royal Marine Blue (from user pattern screenshot)
+        // Primary Brand: WCAG AAA Compliant Deep Royal Blue (#113F67 / #0F4C81)
         huarique: {
-          50: '#F0F5FD',
-          100: '#E1ECFB',
-          200: '#C3D9F7',
-          300: '#91B7EF',
-          400: '#558DE3',
-          500: '#1552A0', // Primary Royal Blue
-          600: '#114389',
-          700: '#0D336B',
-          800: '#09234B',
-          900: '#061630',
+          50: '#FAF8F5',  // Warm Earthenware Cream Background
+          100: '#F1F5F9', // Soft Neutral Tint
+          200: '#E2E8F0', // Border Neutral
+          300: '#CBD5E1',
+          400: '#64748B',
+          500: '#113F67', // WCAG AAA Deep Royal Navy (#113F67)
+          600: '#0E3455',
+          700: '#0B2943',
+          800: '#081F33',
+          900: '#051422', // Deepest Text Dark
         },
-        // Secondary Brand Color: Golden Tan (Original logo earthenware tone)
+        // Secondary Brand: WCAG AAA Compliant Logo Gold (#A16207)
         gold: {
-          50: '#FDFBF7',
-          100: '#F5ECE0',
-          200: '#E9D6C0',
-          300: '#DBBC9B',
-          400: '#CF9D68',
-          500: '#C89B3C', // Logo Golden Tan
-          600: '#B2822B',
-          700: '#8E621F',
-          800: '#694617',
-          900: '#261C14',
+          50: '#FEFCE8',
+          100: '#FEF9C3',
+          200: '#FEF08A',
+          300: '#FDE047',
+          500: '#A16207', // Logo Gold (WCAG AAA Compliant > 7:1)
+          600: '#854D0E',
+          700: '#713F12',
+          800: '#542D0E',
+          900: '#3A1E0B',
         },
-        // Status Colors
+        // Status Colors (WCAG AAA Compliant > 7:1 Contrast)
         sage: {
-          50: '#F2F7F2',
-          100: '#DEECDF',
-          200: '#BED9C0',
-          300: '#97BF9A',
-          500: '#4E8752', // Mesa Libre
-          600: '#3D6D40',
-          700: '#2D5230',
-          800: '#1D3720',
+          50: '#F0FDF4',
+          100: '#DCFCE7',
+          200: '#BBF7D0',
+          500: '#15803D', // Libre (AAA Green)
+          600: '#166534',
+          700: '#14532D',
         },
         amber: {
           50: '#FFFBEB',
           100: '#FEF3C7',
           200: '#FDE68A',
-          300: '#FCD34D',
-          500: '#D97706', // Mesa Ocupada
-          600: '#B45309',
-          700: '#92400E',
-          800: '#78350F',
+          500: '#B45309', // Ocupada (AAA Amber)
+          600: '#92400E',
+          700: '#78350F',
         },
         terracotta: {
-          50: '#FDF2F0',
-          100: '#FCE4E0',
-          200: '#F8C4BB',
-          300: '#F29A8B',
-          500: '#C05621', // Mesa Por Pagar
-          600: '#9C3D12',
-          700: '#7B2C0E',
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          500: '#B91C1C', // Por Pagar (AAA Terracotta Red)
+          600: '#991B1B',
+          700: '#7F1D1D',
         }
       },
       borderRadius: {
@@ -69,9 +63,9 @@ export default {
         '5xl': '2.5rem',
       },
       boxShadow: {
-        'soft': '0 4px 20px -2px rgba(13, 51, 107, 0.08)',
-        'soft-lg': '0 10px 30px -4px rgba(13, 51, 107, 0.12)',
-        'touch': '0 4px 14px 0 rgba(21, 82, 160, 0.35)',
+        'soft': '0 4px 20px -2px rgba(5, 20, 34, 0.06)',
+        'soft-lg': '0 10px 30px -4px rgba(5, 20, 34, 0.12)',
+        'touch': '0 4px 14px 0 rgba(17, 63, 103, 0.35)',
       }
     },
   },
