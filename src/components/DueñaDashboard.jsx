@@ -1,16 +1,14 @@
 import React from 'react';
 import { useStore } from '../store/useStore';
-import { BarChart3, TrendingUp, Users, Award, Clock, DollarSign, Utensils, LayoutGrid, Sparkles } from 'lucide-react';
+import { BarChart3, TrendingUp, Users, Award, Clock, DollarSign, Utensils, LayoutGrid, Sparkles, Crown } from 'lucide-react';
 
 export default function DueñaDashboard() {
-  const { mozos, comandas, salones, mesas } = useStore();
+  const { mozos, comandas, salones } = useStore();
 
-  // Calculate sales metrics
   const totalRecaudado = comandas.reduce((sum, c) => sum + (c.total || 0), 0);
   const totalComandas = comandas.length;
   const ticketPromedio = totalComandas > 0 ? totalRecaudado / totalComandas : 0;
 
-  // Mozos activity calculation
   const mozoStats = mozos.filter(m => m.rol === 'mozo').map(mozo => {
     const mozoComandas = comandas.filter(c => c.mozoId === mozo.id);
     const totalVendido = mozoComandas.reduce((sum, c) => sum + (c.total || 0), 0);
@@ -25,21 +23,8 @@ export default function DueñaDashboard() {
     };
   });
 
-  // Sort mozos by revenue
   const topMozo = [...mozoStats].sort((a, b) => b.totalVendido - a.totalVendido)[0];
 
-  // Sales by Salon
-  const salonStats = salones.map(salon => {
-    const salonComandas = comandas.filter(c => c.salonNombre.includes(salon.nombre) || c.salonNombre.includes(salon.id));
-    const totalVendido = salonComandas.reduce((sum, c) => sum + (c.total || 0), 0);
-    return {
-      ...salon,
-      comandasCount: salonComandas.length,
-      totalVendido
-    };
-  });
-
-  // Top Dishes
   const dishMap = {};
   comandas.forEach(cmd => {
     cmd.items.forEach(item => {
@@ -59,8 +44,10 @@ export default function DueñaDashboard() {
       {/* Top Header Banner */}
       <div className="bg-white p-6 rounded-3xl border border-huarique-100 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2">
-            <span className="p-2 rounded-2xl bg-huarique-50 text-2xl border border-huarique-200">👑</span>
+          <div className="flex items-center space-x-3">
+            <div className="p-3 rounded-2xl bg-huarique-50 text-huarique-600 border border-huarique-200">
+              <Crown className="w-6 h-6" />
+            </div>
             <div>
               <h2 className="text-xl font-extrabold text-huarique-900 leading-tight">
                 Panel de Control de la Dueña
@@ -72,7 +59,6 @@ export default function DueñaDashboard() {
           </div>
         </div>
 
-        {/* Date Filter Badge */}
         <div className="flex items-center space-x-2 bg-huarique-50 px-4 py-2.5 rounded-2xl border border-huarique-100 text-xs font-bold text-huarique-700">
           <Clock className="w-4 h-4 text-huarique-500" />
           <span>Turno Actual: Hoy ({new Date().toLocaleDateString('es-PE')})</span>
@@ -82,7 +68,6 @@ export default function DueñaDashboard() {
       {/* Top 4 Key Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        {/* Metric 1: Venta Total */}
         <div className="bg-white p-5 rounded-3xl border border-huarique-100 shadow-soft space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-huarique-500 uppercase tracking-wider">Ventas Totales</span>
@@ -99,7 +84,6 @@ export default function DueñaDashboard() {
           </p>
         </div>
 
-        {/* Metric 2: Comandas Atendidas */}
         <div className="bg-white p-5 rounded-3xl border border-huarique-100 shadow-soft space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-huarique-500 uppercase tracking-wider">Mesas Atendidas</span>
@@ -115,7 +99,6 @@ export default function DueñaDashboard() {
           </p>
         </div>
 
-        {/* Metric 3: Mozo Destacado */}
         <div className="bg-white p-5 rounded-3xl border border-huarique-100 shadow-soft space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-huarique-500 uppercase tracking-wider">Mozo Top del Día</span>
@@ -131,7 +114,6 @@ export default function DueñaDashboard() {
           </p>
         </div>
 
-        {/* Metric 4: Salón con Más Ventas */}
         <div className="bg-white p-5 rounded-3xl border border-huarique-100 shadow-soft space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-huarique-500 uppercase tracking-wider">Salón Activo</span>
@@ -180,7 +162,9 @@ export default function DueñaDashboard() {
                 <tr key={mozo.id} className="hover:bg-huarique-50/40 transition">
                   <td className="p-3.5">
                     <div className="flex items-center space-x-3">
-                      <span className="text-2xl p-1.5 bg-huarique-50 rounded-xl border border-huarique-100">{mozo.avatar}</span>
+                      <div className="w-9 h-9 rounded-xl bg-huarique-500 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
+                        {mozo.iniciales || 'MO'}
+                      </div>
                       <div>
                         <p className="font-extrabold text-huarique-900 text-sm">{mozo.nombre}</p>
                         <p className="text-[11px] text-huarique-500 font-mono">PIN: ******</p>
@@ -225,7 +209,6 @@ export default function DueñaDashboard() {
       {/* Grid Bottom: Top Dishes & Recent Activity Log */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        {/* Top Dishes Ranking */}
         <div className="bg-white p-6 rounded-3xl border border-huarique-100 shadow-soft space-y-4">
           <h3 className="text-base font-extrabold text-huarique-900 flex items-center space-x-2">
             <Utensils className="w-5 h-5 text-huarique-500" />
@@ -256,7 +239,6 @@ export default function DueñaDashboard() {
           </div>
         </div>
 
-        {/* Live Comandas History Log */}
         <div className="bg-white p-6 rounded-3xl border border-huarique-100 shadow-soft space-y-4">
           <h3 className="text-base font-extrabold text-huarique-900 flex items-center space-x-2">
             <Clock className="w-5 h-5 text-huarique-500" />

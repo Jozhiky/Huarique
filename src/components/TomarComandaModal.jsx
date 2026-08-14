@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
-import { X, Search, Plus, Minus, Trash2, Printer, Send, MessageSquare, Utensils, AlertCircle } from 'lucide-react';
+import { X, Search, Plus, Minus, Trash2, Send, MessageSquare, Utensils, AlertCircle, UtensilsCrossed } from 'lucide-react';
 
 export default function TomarComandaModal({ mesa, isOpen, onClose }) {
   const { productos, comandas, crearEnviarComanda, mozoActivo } = useStore();
@@ -9,7 +9,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
   const [cartItems, setCartItems] = useState([]);
   const [notaGeneral, setNotaGeneral] = useState('');
 
-  // Load existing comanda items if table is occupied
   useEffect(() => {
     if (mesa && mesa.comandaActualId) {
       const existingCmd = comandas.find(c => c.id === mesa.comandaActualId);
@@ -51,7 +50,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
           precio: product.precio,
           cantidad: 1,
           nota: '',
-          imagen: product.imagen
         }
       ];
     });
@@ -122,7 +120,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
 
           {/* Search & Categories Bar */}
           <div className="space-y-3 mb-4">
-            {/* Search Input */}
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3.5 top-3 text-huarique-400" />
               <input
@@ -134,7 +131,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
               />
             </div>
 
-            {/* Categories scrollable pill selector */}
             <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
               {categories.map((cat) => (
                 <button
@@ -161,9 +157,9 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
                 className="bg-white p-3.5 rounded-2xl border border-huarique-100/80 hover:border-huarique-400/50 shadow-sm hover:shadow-soft transition cursor-pointer flex items-center justify-between group active:scale-[0.98]"
               >
                 <div className="flex items-center space-x-3 flex-1 min-w-0 pr-2">
-                  <span className="text-3xl p-2 bg-huarique-50 rounded-xl flex-shrink-0">
-                    {product.imagen}
-                  </span>
+                  <div className="w-10 h-10 rounded-xl bg-huarique-50 border border-huarique-100 flex items-center justify-center text-huarique-600 flex-shrink-0">
+                    <UtensilsCrossed className="w-5 h-5" />
+                  </div>
                   <div className="min-w-0 flex-1">
                     <h4 className="text-xs font-bold text-huarique-900 truncate group-hover:text-huarique-600 transition">
                       {product.nombre}
@@ -189,7 +185,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
         {/* Right Side: Order Cart & Comanda Summary */}
         <div className="w-full md:w-96 flex flex-col h-full bg-white p-4 md:p-6 justify-between relative">
           
-          {/* Close button for desktop */}
           <button
             onClick={onClose}
             className="hidden md:block absolute top-5 right-5 text-huarique-400 hover:text-huarique-700 p-2 rounded-full hover:bg-huarique-50"
@@ -206,7 +201,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
               {cartItems.length} ítems seleccionados
             </p>
 
-            {/* Cart Items List */}
             <div className="max-h-[45vh] md:max-h-[50vh] overflow-y-auto pr-1 space-y-3">
               {cartItems.length === 0 ? (
                 <div className="text-center py-10 bg-huarique-50/50 rounded-2xl border border-dashed border-huarique-200">
@@ -225,19 +219,14 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
                     className="p-3 bg-huarique-50/70 rounded-2xl border border-huarique-100 space-y-2"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2 truncate pr-2">
-                        <span className="text-base">{item.imagen}</span>
-                        <span className="text-xs font-bold text-huarique-900 truncate">{item.nombre}</span>
-                      </div>
+                      <span className="text-xs font-bold text-huarique-900 truncate pr-2">{item.nombre}</span>
                       <span className="text-xs font-extrabold text-huarique-900 whitespace-nowrap">
                         S/ {(item.precio * item.cantidad).toFixed(2)}
                       </span>
                     </div>
 
-                    {/* Quantity controls and observation note */}
                     <div className="flex items-center justify-between pt-1">
                       
-                      {/* Quantity Buttons */}
                       <div className="flex items-center space-x-2 bg-white rounded-xl border border-huarique-200 p-1">
                         <button
                           onClick={() => handleUpdateQuantity(index, -1)}
@@ -256,7 +245,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
                         </button>
                       </div>
 
-                      {/* Item note input */}
                       <div className="flex items-center space-x-1 flex-1 ml-3">
                         <MessageSquare className="w-3.5 h-3.5 text-huarique-400 flex-shrink-0" />
                         <input
@@ -268,7 +256,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
                         />
                       </div>
 
-                      {/* Remove item button */}
                       <button
                         onClick={() => handleRemoveItem(index)}
                         className="ml-2 text-red-400 hover:text-red-600 p-1"
@@ -283,7 +270,6 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
             </div>
           </div>
 
-          {/* Cart Footer Total & Action Buttons */}
           <div className="pt-4 border-t border-huarique-100 space-y-3">
             
             <div className="flex items-center justify-between text-base font-extrabold text-huarique-900 bg-huarique-50 p-3 rounded-2xl border border-huarique-100">

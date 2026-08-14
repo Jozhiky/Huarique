@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Lock, Delete, CheckCircle2, User, AlertCircle, X } from 'lucide-react';
+import { Lock, Delete, CheckCircle2, User, AlertCircle, X, ShieldCheck, UserCheck } from 'lucide-react';
 
 export default function PinLoginModal({ isOpen, onClose }) {
   const { mozos, mozoActivo, setMozoActivoByPin } = useStore();
@@ -69,7 +69,7 @@ export default function PinLoginModal({ isOpen, onClose }) {
         </div>
 
         {/* Mozo Selector Badges */}
-        <div className="grid grid-cols-2 gap-2 mb-6">
+        <div className="grid grid-cols-2 gap-2.5 mb-6">
           {mozos.map((m) => (
             <button
               key={m.id}
@@ -78,16 +78,24 @@ export default function PinLoginModal({ isOpen, onClose }) {
                 setPin('');
                 setErrorMsg('');
               }}
-              className={`flex items-center space-x-2.5 p-3 rounded-2xl border text-left transition ${
+              className={`flex items-center space-x-3 p-3 rounded-2xl border text-left transition ${
                 selectedMozo?.id === m.id
                   ? 'border-huarique-500 bg-huarique-50 text-huarique-900 font-bold ring-2 ring-huarique-400/30'
                   : 'border-huarique-100 hover:border-huarique-300 text-huarique-700 bg-white'
               }`}
             >
-              <span className="text-2xl">{m.avatar}</span>
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-extrabold text-xs shadow-sm ${
+                m.rol === 'duena' 
+                  ? 'bg-huarique-500 text-white' 
+                  : 'bg-huarique-100 text-huarique-800'
+              }`}>
+                {m.iniciales || m.nombre.substring(0, 2).toUpperCase()}
+              </div>
               <div className="truncate">
-                <p className="text-xs font-semibold text-huarique-500 uppercase">{m.rol === 'duena' ? 'Administración' : 'Mozo'}</p>
-                <p className="text-sm truncate">{m.nombre}</p>
+                <p className="text-[10px] font-bold text-huarique-500 uppercase tracking-wider">
+                  {m.rol === 'duena' ? 'Administración' : 'Mozo'}
+                </p>
+                <p className="text-xs font-bold truncate text-huarique-900">{m.nombre}</p>
               </div>
             </button>
           ))}
@@ -152,7 +160,6 @@ export default function PinLoginModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Quick hint */}
         <p className="text-center text-[11px] text-huarique-400 font-medium">
           PINs de prueba: Juan (123456) | María (654321) | Carlos (112233) | Dueña (999999)
         </p>

@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, ArrowRight, Sparkles } from 'lucide-react';
+import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees, ArrowRight } from 'lucide-react';
 
 export default function SalonesMap({ onSelectMesaForComanda }) {
-  const { salones, mesas, salonSeleccionadoId, setSalonSeleccionadoId, cobrarMesa, comandas } = useStore();
+  const { salones, mesas, salonSeleccionadoId, setSalonSeleccionadoId, cobrarMesa } = useStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterEstado, setFilterEstado] = useState('todos');
 
-  // Filter mesas for selected salon
   const currentSalon = salones.find(s => s.id === salonSeleccionadoId) || salones[0];
   const salonMesas = mesas.filter(m => m.salonId === currentSalon.id);
 
-  // Apply search & status filters
   const filteredMesas = salonMesas.filter(m => {
     const matchesSearch = searchQuery === '' || 
       m.numero.toString().includes(searchQuery) ||
@@ -21,13 +19,11 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
     return matchesSearch && matchesEstado;
   });
 
-  // Calculate salon stats
   const totalLibres = salonMesas.filter(m => m.estado === 'libre').length;
   const totalOcupadas = salonMesas.filter(m => m.estado === 'ocupada').length;
   const totalPorPagar = salonMesas.filter(m => m.estado === 'por_pagar').length;
   const totalRecaudadoSalon = salonMesas.reduce((sum, m) => sum + (m.totalActual || 0), 0);
 
-  // Helper time elapsed string
   const getTimeElapsedStr = (isoTime) => {
     if (!isoTime) return '';
     const minutes = Math.floor((Date.now() - new Date(isoTime).getTime()) / 60000);
@@ -35,6 +31,18 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
     if (minutes < 60) return `Hace ${minutes} min`;
     const hours = Math.floor(minutes / 60);
     return `Hace ${hours}h ${minutes % 60}m`;
+  };
+
+  const getSalonIcon = (iconType) => {
+    switch (iconType) {
+      case 'wine':
+        return <Wine className="w-5 h-5" />;
+      case 'tree':
+        return <Trees className="w-5 h-5" />;
+      case 'building':
+      default:
+        return <Building2 className="w-5 h-5" />;
+    }
   };
 
   return (
@@ -57,7 +65,9 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                     : 'bg-huarique-50 text-huarique-700 hover:bg-huarique-100 border border-huarique-200/60'
                 }`}
               >
-                <span className="text-xl">{salon.icon}</span>
+                <div className={`p-2 rounded-xl ${isSelected ? 'bg-white/20 text-white' : 'bg-huarique-100 text-huarique-700'}`}>
+                  {getSalonIcon(salon.iconType)}
+                </div>
                 <div className="text-left">
                   <div className="flex items-center space-x-1.5">
                     <span>{salon.nombre}</span>
@@ -153,12 +163,11 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
 
       </div>
 
-      {/* Mesas Cards Grid (Responsive Grid) */}
+      {/* Mesas Cards Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {filteredMesas.map((mesa) => {
           const isLibre = mesa.estado === 'libre';
           const isOcupada = mesa.estado === 'ocupada';
-          const isPorPagar = mesa.estado === 'por_pagar';
 
           return (
             <div
@@ -172,7 +181,6 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
               }`}
             >
               
-              {/* Card Header: Table Number & Capacity */}
               <div className="flex items-center justify-between mb-3">
                 <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-extrabold text-base shadow-sm transition ${
                   isLibre
@@ -190,7 +198,6 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                 </div>
               </div>
 
-              {/* Card Body Info */}
               <div className="space-y-1.5 my-2">
                 <div className="flex items-center justify-between">
                   <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
@@ -221,7 +228,6 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                 )}
               </div>
 
-              {/* Card Actions Button */}
               <div className="pt-3 border-t border-huarique-100/60 flex flex-col gap-1.5">
                 <button
                   onClick={() => onSelectMesaForComanda(mesa)}
