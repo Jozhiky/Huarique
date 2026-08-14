@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { isSupabaseConfigured } from '../lib/supabase';
-import { LayoutGrid, UtensilsCrossed, BarChart3, Boxes, Clock, Database, LogOut } from 'lucide-react';
+import { LayoutGrid, UtensilsCrossed, BarChart3, Boxes, Clock, Database, LogOut, ShieldCheck } from 'lucide-react';
 
 export default function HeaderNavigation() {
   const { mozoActivo, activeTab, setActiveTab, logout } = useStore();
@@ -17,12 +17,19 @@ export default function HeaderNavigation() {
     return () => clearInterval(timer);
   }, []);
 
-  const navItems = [
-    { id: 'salones', label: 'Salones & Mesas', icon: LayoutGrid },
-    { id: 'cocina', label: 'Comandas & Cocina', icon: UtensilsCrossed },
-    { id: 'duena', label: 'Panel Dueña', icon: BarChart3 },
-    { id: 'inventario', label: 'Insumos / Kardex', icon: Boxes },
+  const allNavItems = [
+    { id: 'salones', label: 'Salones & Mesas', icon: LayoutGrid, requiredRole: 'mozo' },
+    { id: 'cocina', label: 'Comandas & Cocina', icon: UtensilsCrossed, requiredRole: 'mozo' },
+    { id: 'duena', label: 'Panel Dueña', icon: BarChart3, requiredRole: 'duena' },
+    { id: 'inventario', label: 'Insumos / Kardex', icon: Boxes, requiredRole: 'duena' },
   ];
+
+  // Filter navigation items by role
+  const isOwner = mozoActivo?.rol === 'duena';
+  const navItems = allNavItems.filter(item => {
+    if (isOwner) return true; // Owner sees all tabs
+    return item.requiredRole === 'mozo'; // Waiter sees only Salones & Cocina
+  });
 
   return (
     <header className="bg-white border-b border-huarique-100 sticky top-0 z-40 shadow-soft">
@@ -41,12 +48,14 @@ export default function HeaderNavigation() {
               <p className="text-xs font-semibold text-huarique-500 flex items-center space-x-2">
                 <span>Comandas & Control</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-huarique-400"></span>
-                <span className="text-huarique-700">3 Salones (80 Mesas)</span>
+                <span className="text-huarique-700">
+                  {isOwner ? 'Vista Administrador' : 'Vista Mozo'}
+                </span>
               </p>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
+          {/* Navigation Tabs (Filtered by Role) */}
           <nav className="hidden md:flex items-center space-x-1.5 bg-huarique-50 p-1.5 rounded-2xl border border-huarique-100">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -92,12 +101,14 @@ export default function HeaderNavigation() {
 
             {/* Active Mozo Pill Button */}
             <div className="flex items-center space-x-2 bg-huarique-50 border border-huarique-200 rounded-2xl p-1.5 pr-2">
-              <div className="w-9 h-9 rounded-xl bg-huarique-500 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
+              <div className={`w-9 h-9 rounded-xl font-extrabold text-xs flex items-center justify-center shadow-sm ${
+                isOwner ? 'bg-huarique-900 text-white' : 'bg-huarique-500 text-white'
+              }`}>
                 {mozoActivo?.iniciales || 'MO'}
               </div>
               <div className="text-left">
-                <p className="text-[10px] uppercase font-bold text-huarique-500 tracking-wider">
-                  {mozoActivo?.rol === 'duena' ? 'Dueña' : 'Mozo'}
+                <p className="text-[10px] uppercase font-bold text-huarique-500 tracking-wider flex items-center space-x-1">
+                  <span>{isOwner ? 'Dueña' : 'Mozo'}</span>
                 </p>
                 <p className="text-xs font-bold text-huarique-900 truncate max-w-[90px]">
                   {mozoActivo?.nombre || 'Mozo'}
@@ -118,7 +129,7 @@ export default function HeaderNavigation() {
 
         </div>
 
-        {/* Mobile Navigation Tabs */}
+        {/* Mobile Navigation Tabs (Filtered by Role) */}
         <div className="flex md:hidden items-center justify-between border-t border-huarique-100 py-2 space-x-1">
           {navItems.map((item) => {
             const Icon = item.icon;

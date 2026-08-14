@@ -189,8 +189,8 @@ export const useStore = create(
   persist(
     (set, get) => ({
       mozos: INITIAL_MOZOS,
-      mozoActivo: null, // Require login first!
-      isAuthenticated: false, // Require login first!
+      mozoActivo: null,
+      isAuthenticated: false,
       salones: INITIAL_SALONES,
       mesas: generateInitialMesas(),
       productos: INITIAL_PRODUCTOS,
@@ -206,7 +206,9 @@ export const useStore = create(
       loginWithPin: (pin) => {
         const found = get().mozos.find(m => m.pin === pin);
         if (found) {
-          set({ mozoActivo: found, isAuthenticated: true });
+          // Set active tab based on role
+          const defaultTab = found.rol === 'duena' ? 'duena' : 'salones';
+          set({ mozoActivo: found, isAuthenticated: true, activeTab: defaultTab });
           return { success: true, mozo: found };
         }
         return { success: false, message: 'PIN incorrecto. Verifica los dígitos asignados.' };
@@ -215,7 +217,17 @@ export const useStore = create(
       logout: () => set({ isAuthenticated: false, mozoActivo: null }),
 
       setSalonSeleccionadoId: (id) => set({ salonSeleccionadoId: id }),
-      setActiveTab: (tab) => set({ activeTab: tab }),
+      
+      setActiveTab: (tab) => {
+        const state = get();
+        // RBAC Guard: Mozos can ONLY access 'salones' and 'cocina'
+        if (state.mozoActivo?.rol === 'mozo' && (tab === 'duena' || tab === 'inventario')) {
+          set({ activeTab: 'salones' });
+          return;
+        }
+        set({ activeTab: tab });
+      },
+
       setMesaSeleccionada: (mesa) => set({ mesaSeleccionada: mesa }),
       setTicketImprimir: (comanda) => set({ ticketImprimir: comanda }),
 
@@ -374,7 +386,7 @@ export const useStore = create(
       }
     }),
     {
-      name: 'huarique-catacaos-storage-v2',
+      name: 'huarique-catacaos-storage-v3',
     }
   )
 );
