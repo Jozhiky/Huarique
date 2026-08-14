@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees, ArrowLeft, ArrowRight } from 'lucide-react';
 
 export default function SalonesMap({ onSelectMesaForComanda }) {
-  const { salones, mesas, salonSeleccionadoId, setSalonSeleccionadoId, cobrarMesa } = useStore();
+  const { salones, mesas, salonSeleccionadoId, setSalonSeleccionadoId, cobrarMesa, mozoActivo } = useStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterEstado, setFilterEstado] = useState('todos');
 
@@ -29,71 +29,63 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   };
 
   // =========================================================================
-  // PASO 1: VISTA DE SELECCIÓN DE LOS 3 SALONES
+  // PASO 1: SELECCIÓN COMPACTA DE LOS 3 SALONES (SIN SCROLL - ENTRA 100% EN PANTALLA)
   // =========================================================================
   if (!salonSeleccionadoId) {
     return (
-      <div className="space-y-8 py-4">
+      <div className="space-y-4 py-2 flex flex-col min-h-[78vh] justify-between">
         
-        {/* Banner Header */}
-        <div className="bg-white p-6 sm:p-8 rounded-4xl border border-huarique-100 shadow-soft text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Compact Header (Sin banners gigantes) */}
+        <div className="flex items-center justify-between bg-white px-6 py-4 rounded-3xl border border-huarique-100 shadow-soft">
           <div>
-            <span className="px-3 py-1 bg-huarique-50 text-huarique-800 text-xs font-black rounded-full uppercase tracking-wider border border-huarique-200">
-              Paso 1 de 2
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-huarique-900 leading-tight mt-2">
-              Selecciona el Salón a Atender
+            <h2 className="text-xl font-black text-huarique-900 tracking-tight">
+              Selecciona Salón
             </h2>
-            <p className="text-sm font-semibold text-huarique-500 mt-1">
-              Elige entre los 3 salones del restaurante para ver el mapa de mesas en tiempo real
+            <p className="text-xs text-huarique-500 font-semibold">
+              Mozo: <strong className="text-huarique-900">{mozoActivo?.nombre}</strong>
             </p>
           </div>
-
-          <div className="bg-huarique-50 px-5 py-3.5 rounded-3xl border border-huarique-100 text-xs font-bold text-huarique-700 whitespace-nowrap">
-            Capacidad Total: <span className="text-base font-black text-huarique-900">80 Mesas</span>
+          <div className="text-xs font-black text-huarique-700 bg-huarique-50 px-4 py-2 rounded-2xl border border-huarique-100">
+            80 Mesas Totales
           </div>
         </div>
 
-        {/* 3 Salones Big Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* 3 Salones Cards Grid (Perfectly fitted, 0 scroll needed on Tablet) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 flex-1 items-stretch">
           {salones.map((salon) => {
             const salonMesas = mesas.filter(m => m.salonId === salon.id);
             const totalLibres = salonMesas.filter(m => m.estado === 'libre').length;
             const totalOcupadas = salonMesas.filter(m => m.estado === 'ocupada').length;
             const totalPorPagar = salonMesas.filter(m => m.estado === 'por_pagar').length;
-            const totalConsumo = salonMesas.reduce((sum, m) => sum + (m.totalActual || 0), 0);
 
             return (
               <div
                 key={salon.id}
                 onClick={() => setSalonSeleccionadoId(salon.id)}
-                className="bg-white rounded-4xl border border-huarique-100/90 p-6 sm:p-8 shadow-soft hover:shadow-soft-lg transition-all duration-300 cursor-pointer flex flex-col justify-between group border-2 hover:border-huarique-400/80 active:scale-[0.98]"
+                className="bg-white rounded-4xl border border-huarique-100 p-6 shadow-soft hover:shadow-soft-lg transition-all duration-200 cursor-pointer flex flex-col justify-between group border-2 hover:border-huarique-400 active:scale-[0.98]"
               >
                 <div>
                   
                   {/* Top Icon & Badge */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-16 h-16 rounded-3xl bg-huarique-50 p-3.5 border border-huarique-200/80 flex items-center justify-center group-hover:bg-huarique-500 group-hover:text-white transition shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-huarique-50 p-3 border border-huarique-200 flex items-center justify-center group-hover:bg-huarique-500 group-hover:text-white transition shadow-sm">
                       {getSalonIcon(salon.iconType)}
                     </div>
-                    <span className="px-3.5 py-1.5 rounded-full text-xs font-black bg-huarique-50 text-huarique-800 border border-huarique-100">
+                    <span className="px-3 py-1 rounded-full text-xs font-black bg-huarique-50 text-huarique-800 border border-huarique-100">
                       {salon.totalMesas} Mesas
                     </span>
                   </div>
 
-                  {/* Title & Description */}
-                  <h3 className="text-xl font-black text-huarique-900 group-hover:text-huarique-600 transition">
+                  {/* Title */}
+                  <h3 className="text-lg font-black text-huarique-900 group-hover:text-huarique-600 transition">
                     {salon.nombre}
                   </h3>
-                  <p className="text-xs text-huarique-500 font-semibold mt-1 line-clamp-2">
-                    {salon.descripcion}
-                  </p>
-                  <p className="text-[11px] text-huarique-400 font-bold uppercase tracking-wider mt-2">
+                  <p className="text-[11px] text-huarique-400 font-bold uppercase tracking-wider mt-1">
                     {salon.rito}
                   </p>
 
                   {/* Status Metrics */}
-                  <div className="grid grid-cols-3 gap-2 my-6 p-3 bg-huarique-50/70 rounded-2xl border border-huarique-100 text-center text-xs">
+                  <div className="grid grid-cols-3 gap-2 my-4 p-3 bg-huarique-50/80 rounded-2xl border border-huarique-100 text-center text-xs">
                     <div>
                       <span className="block text-base font-black text-sage-600">{totalLibres}</span>
                       <span className="text-[10px] font-bold text-huarique-500">Libres</span>
@@ -110,18 +102,11 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
 
                 </div>
 
-                {/* Bottom Action Button */}
-                <div className="pt-4 border-t border-huarique-100/80 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-bold text-huarique-400 block">Acumulado Salón:</span>
-                    <span className="text-sm font-black text-huarique-900">S/ {totalConsumo.toFixed(2)}</span>
-                  </div>
-
-                  <button className="py-3 px-5 rounded-2xl bg-huarique-500 group-hover:bg-huarique-600 text-white font-extrabold text-xs flex items-center space-x-2 shadow-touch transition">
-                    <span>Ingresar</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
+                {/* Big Direct Access Button */}
+                <button className="w-full py-3.5 px-4 rounded-2xl bg-huarique-500 group-hover:bg-huarique-600 text-white font-black text-xs flex items-center justify-center space-x-2 shadow-touch transition">
+                  <span>Ingresar a Mesas</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
 
               </div>
             );
@@ -133,7 +118,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   }
 
   // =========================================================================
-  // PASO 2: VISTA DE MESAS DEL SALÓN SELECCIONADO
+  // PASO 2: MAPA DE MESAS DEL SALÓN SELECCIONADO (CON BOTÓN RETROCEDER)
   // =========================================================================
   const currentSalon = salones.find(s => s.id === salonSeleccionadoId) || salones[0];
   const salonMesas = mesas.filter(m => m.salonId === currentSalon.id);
@@ -153,7 +138,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   const totalRecaudadoSalon = salonMesas.reduce((sum, m) => sum + (m.totalActual || 0), 0);
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <div className="space-y-6">
       
       {/* Header Bar with Back Button & Salon Info */}
       <div className="bg-white p-5 sm:p-6 rounded-4xl border border-huarique-100 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -169,11 +154,11 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
           </button>
 
           <div>
-            <h2 className="text-xl sm:text-2xl font-black text-huarique-900 leading-tight flex items-center space-x-2">
-              <span>{currentSalon.nombre}</span>
+            <h2 className="text-xl sm:text-2xl font-black text-huarique-900 leading-tight">
+              {currentSalon.nombre}
             </h2>
             <p className="text-xs font-semibold text-huarique-500">
-              {currentSalon.rito} ({currentSalon.totalMesas} mesas totales)
+              {currentSalon.rito} ({currentSalon.totalMesas} mesas)
             </p>
           </div>
         </div>
@@ -273,7 +258,6 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
               }`}
             >
               
-              {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg shadow-sm transition ${
                   isLibre
@@ -291,7 +275,6 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                 </div>
               </div>
 
-              {/* Status Info */}
               <div className="space-y-2 my-2">
                 <div className="flex items-center justify-between">
                   <span className={`text-[10px] uppercase font-black tracking-wider px-2.5 py-1 rounded-full ${
@@ -322,7 +305,6 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                 )}
               </div>
 
-              {/* Action Buttons */}
               <div className="pt-4 border-t border-huarique-100/80 flex flex-col gap-2">
                 <button
                   onClick={() => onSelectMesaForComanda(mesa)}
