@@ -7,49 +7,71 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Primary Brand Color: Royal Marine Blue (from user pattern screenshot)
         huarique: {
-          50: '#FAF7F2',
-          100: '#F4EFE6',
-          200: '#E8DEC9',
-          300: '#DBCBA9',
-          400: '#D2A752',
-          500: '#C89B3C',
-          600: '#A87E2C',
-          700: '#876220',
-          800: '#5C4315',
-          900: '#2D261E',
+          50: '#F0F5FD',
+          100: '#E1ECFB',
+          200: '#C3D9F7',
+          300: '#91B7EF',
+          400: '#558DE3',
+          500: '#1552A0', // Primary Royal Blue
+          600: '#114389',
+          700: '#0D336B',
+          800: '#09234B',
+          900: '#061630',
         },
+        // Secondary Brand Color: Golden Tan (Original logo earthenware tone)
+        gold: {
+          50: '#FDFBF7',
+          100: '#F5ECE0',
+          200: '#E9D6C0',
+          300: '#DBBC9B',
+          400: '#CF9D68',
+          500: '#C89B3C', // Logo Golden Tan
+          600: '#B2822B',
+          700: '#8E621F',
+          800: '#694617',
+          900: '#261C14',
+        },
+        // Status Colors
         sage: {
-          50: '#F4F7F4',
-          100: '#E9F0EB',
-          500: '#5A8D65',
-          600: '#46704F',
-          700: '#34533A',
+          50: '#F2F7F2',
+          100: '#DEECDF',
+          200: '#BED9C0',
+          300: '#97BF9A',
+          500: '#4E8752', // Mesa Libre
+          600: '#3D6D40',
+          700: '#2D5230',
+          800: '#1D3720',
         },
         amber: {
           50: '#FFFBEB',
           100: '#FEF3C7',
-          500: '#D97706',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          500: '#D97706', // Mesa Ocupada
           600: '#B45309',
+          700: '#92400E',
+          800: '#78350F',
         },
         terracotta: {
-          50: '#FDF7F5',
-          100: '#FDF0ED',
-          500: '#E07A5F',
-          600: '#C85A3F',
+          50: '#FDF2F0',
+          100: '#FCE4E0',
+          200: '#F8C4BB',
+          300: '#F29A8B',
+          500: '#C05621', // Mesa Por Pagar
+          600: '#9C3D12',
+          700: '#7B2C0E',
         }
       },
-      fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
       },
       boxShadow: {
-        'soft': '0 4px 20px -2px rgba(45, 38, 30, 0.05)',
-        'soft-lg': '0 10px 30px -4px rgba(45, 38, 30, 0.08)',
-        'touch': '0 2px 8px rgba(200, 155, 60, 0.15)',
-      },
-      borderRadius: {
-        '3xl': '1.5rem',
-        '4xl': '2rem',
+        'soft': '0 4px 20px -2px rgba(13, 51, 107, 0.08)',
+        'soft-lg': '0 10px 30px -4px rgba(13, 51, 107, 0.12)',
+        'touch': '0 4px 14px 0 rgba(21, 82, 160, 0.35)',
       }
     },
   },
