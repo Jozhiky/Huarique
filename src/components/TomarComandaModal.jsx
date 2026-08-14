@@ -99,9 +99,9 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
       <div className="absolute inset-0" onClick={onClose} />
 
       {/* Main Modal Box */}
-      <div className="bg-white w-full max-w-6xl h-[95vh] rounded-3xl sm:rounded-4xl shadow-soft-lg border border-huarique-100 flex flex-col lg:flex-row overflow-hidden relative z-10">
+      <div className="bg-white w-full max-w-6xl h-[92vh] max-h-[92vh] rounded-3xl sm:rounded-4xl shadow-soft-lg border border-huarique-100 flex flex-col lg:flex-row overflow-hidden relative z-10">
         
-        {/* UNIVERSAL TOP HEADER */}
+        {/* UNIVERSAL TOP HEADER (Always Visible with Big Close Button X) */}
         <div className="lg:hidden bg-white px-4 py-3 border-b border-huarique-100 flex items-center justify-between shadow-sm flex-shrink-0">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-2xl bg-huarique-500 text-white font-black text-base flex items-center justify-center shadow-touch">
@@ -136,7 +136,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
               >
                 <span>Pedido</span>
                 {totalItemsCount > 0 && (
-                  <span className="ml-1 bg-huarique-500 text-white text-[10px] px-1.5 py-0.2 rounded-full">
+                  <span className="ml-1 bg-huarique-500 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black">
                     {totalItemsCount}
                   </span>
                 )}
@@ -206,7 +206,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
             </div>
           </div>
 
-          {/* Dishes Cards Grid (Fix: content-start items-start prevents vertical stretching) */}
+          {/* Dishes Cards Grid */}
           <div className="flex-1 overflow-y-auto pr-1 grid grid-cols-1 sm:grid-cols-2 gap-3 content-start items-start min-h-0">
             {filteredProducts.map((product) => (
               <div
@@ -259,8 +259,8 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
 
         </div>
 
-        {/* RIGHT PANEL: Order Cart Summary */}
-        <div className={`w-full lg:w-[400px] flex-col h-full bg-white p-4 sm:p-6 justify-between relative flex-shrink-0 ${
+        {/* RIGHT PANEL: Order Cart Summary (Structured with flex-1 min-h-0 so send button is 100% visible!) */}
+        <div className={`w-full lg:w-[400px] flex flex-col h-full bg-white p-4 sm:p-6 justify-between relative flex-shrink-0 overflow-hidden ${
           activeMobileTab === 'carrito' ? 'flex' : 'hidden lg:flex'
         }`}>
           
@@ -273,109 +273,107 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
             <X className="w-6 h-6" />
           </button>
 
-          <div className="flex flex-col h-full justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <h4 className="text-base font-black text-huarique-900 flex items-center space-x-2">
-                  <Utensils className="w-4 h-4 text-huarique-500" />
-                  <span>Resumen de Comanda</span>
-                </h4>
-              </div>
-              <p className="text-xs text-huarique-500 mb-3 font-semibold">
-                Mesa {mesa.numero} • {totalItemsCount} ítems agregados
-              </p>
+          {/* Header Info (Fixed Top) */}
+          <div className="flex-shrink-0 mb-3">
+            <h4 className="text-base font-black text-huarique-900 flex items-center space-x-2">
+              <Utensils className="w-4 h-4 text-huarique-500" />
+              <span>Resumen de Comanda</span>
+            </h4>
+            <p className="text-xs text-huarique-500 font-semibold">
+              Mesa {mesa.numero} • {totalItemsCount} ítems agregados
+            </p>
+          </div>
 
-              <div className="max-h-[50vh] lg:max-h-[55vh] overflow-y-auto pr-1 space-y-2.5">
-                {cartItems.length === 0 ? (
-                  <div className="text-center py-10 bg-huarique-50/50 rounded-2xl border border-dashed border-huarique-200 p-5">
-                    <AlertCircle className="w-8 h-8 mx-auto text-huarique-300 mb-2" />
-                    <p className="text-xs font-bold text-huarique-600">
-                      No has agregado platos a la comanda
-                    </p>
-                    <p className="text-[10px] text-huarique-400 mt-0.5">
-                      Haz clic en cualquier producto del menú para agregar
-                    </p>
+          {/* Middle Scrollable Items Container (Takes ONLY middle space) */}
+          <div className="flex-1 min-h-0 overflow-y-auto pr-1 space-y-2.5 my-1">
+            {cartItems.length === 0 ? (
+              <div className="text-center py-10 bg-huarique-50/50 rounded-2xl border border-dashed border-huarique-200 p-5 my-auto">
+                <AlertCircle className="w-8 h-8 mx-auto text-huarique-300 mb-2" />
+                <p className="text-xs font-bold text-huarique-600">
+                  No has agregado platos a la comanda
+                </p>
+                <p className="text-[10px] text-huarique-400 mt-0.5">
+                  Haz clic en cualquier producto del menú para agregar
+                </p>
+              </div>
+            ) : (
+              cartItems.map((item, index) => (
+                <div
+                  key={`${item.productoId}-${index}`}
+                  className="p-3 bg-huarique-50/80 rounded-2xl border border-huarique-100 space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-extrabold text-huarique-900 truncate pr-2">{item.nombre}</span>
+                    <span className="text-xs font-black text-huarique-900 whitespace-nowrap">
+                      S/ {(item.precio * item.cantidad).toFixed(2)}
+                    </span>
                   </div>
-                ) : (
-                  cartItems.map((item, index) => (
-                    <div
-                      key={`${item.productoId}-${index}`}
-                      className="p-3 bg-huarique-50/80 rounded-2xl border border-huarique-100 space-y-2"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-extrabold text-huarique-900 truncate pr-2">{item.nombre}</span>
-                        <span className="text-xs font-black text-huarique-900 whitespace-nowrap">
-                          S/ {(item.precio * item.cantidad).toFixed(2)}
-                        </span>
-                      </div>
 
-                      <div className="flex items-center justify-between pt-1">
-                        
-                        <div className="flex items-center space-x-1.5 bg-white rounded-xl border border-huarique-200 p-1">
-                          <button
-                            onClick={() => handleUpdateQuantity(index, -1)}
-                            className="w-6 h-6 rounded-lg bg-huarique-100 hover:bg-huarique-200 text-huarique-800 flex items-center justify-center font-bold text-xs"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="text-xs font-black text-huarique-900 w-4 text-center">
-                            {item.cantidad}
-                          </span>
-                          <button
-                            onClick={() => handleUpdateQuantity(index, 1)}
-                            className="w-6 h-6 rounded-lg bg-huarique-100 hover:bg-huarique-200 text-huarique-800 flex items-center justify-center font-bold text-xs"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
-                        </div>
-
-                        <div className="flex items-center space-x-1 flex-1 ml-2">
-                          <MessageSquare className="w-3.5 h-3.5 text-huarique-400 flex-shrink-0" />
-                          <input
-                            type="text"
-                            placeholder="Obs (sin sal, etc)..."
-                            value={item.nota || ''}
-                            onChange={(e) => handleUpdateNote(index, e.target.value)}
-                            className="w-full text-xs bg-white border border-huarique-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-huarique-400 text-huarique-800"
-                          />
-                        </div>
-
-                        <button
-                          onClick={() => handleRemoveItem(index)}
-                          className="ml-1 text-red-400 hover:text-red-600 p-1"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-
+                  <div className="flex items-center justify-between pt-1">
+                    
+                    <div className="flex items-center space-x-1.5 bg-white rounded-xl border border-huarique-200 p-1">
+                      <button
+                        onClick={() => handleUpdateQuantity(index, -1)}
+                        className="w-6 h-6 rounded-lg bg-huarique-100 hover:bg-huarique-200 text-huarique-800 flex items-center justify-center font-bold text-xs"
+                      >
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="text-xs font-black text-huarique-900 w-4 text-center">
+                        {item.cantidad}
+                      </span>
+                      <button
+                        onClick={() => handleUpdateQuantity(index, 1)}
+                        className="w-6 h-6 rounded-lg bg-huarique-100 hover:bg-huarique-200 text-huarique-800 flex items-center justify-center font-bold text-xs"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </button>
                     </div>
-                  ))
-                )}
-              </div>
+
+                    <div className="flex items-center space-x-1 flex-1 ml-2">
+                      <MessageSquare className="w-3.5 h-3.5 text-huarique-400 flex-shrink-0" />
+                      <input
+                        type="text"
+                        placeholder="Obs (sin sal, etc)..."
+                        value={item.nota || ''}
+                        onChange={(e) => handleUpdateNote(index, e.target.value)}
+                        className="w-full text-xs bg-white border border-huarique-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-huarique-400 text-huarique-800"
+                      />
+                    </div>
+
+                    <button
+                      onClick={() => handleRemoveItem(index)}
+                      className="ml-1 text-red-400 hover:text-red-600 p-1"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Fixed Bottom Actions Bar (Guaranteed 100% visible inside modal!) */}
+          <div className="flex-shrink-0 pt-3 border-t border-huarique-100 space-y-2.5 bg-white">
+            
+            <div className="flex items-center justify-between text-sm font-black text-huarique-900 bg-huarique-50 px-3.5 py-2.5 rounded-2xl border border-huarique-100">
+              <span>TOTAL COMANDA:</span>
+              <span className="text-base sm:text-lg text-huarique-800">S/ {cartTotal.toFixed(2)}</span>
             </div>
 
-            {/* Bottom Actions */}
-            <div className="pt-3 border-t border-huarique-100 space-y-3 mt-2">
-              
-              <div className="flex items-center justify-between text-sm font-black text-huarique-900 bg-huarique-50 p-3 rounded-2xl border border-huarique-100">
-                <span>TOTAL COMANDA:</span>
-                <span className="text-lg text-huarique-800">S/ {cartTotal.toFixed(2)}</span>
-              </div>
+            <button
+              onClick={handleSendComanda}
+              disabled={cartItems.length === 0}
+              className={`w-full py-3.5 px-4 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-touch transition ${
+                cartItems.length > 0
+                  ? 'bg-huarique-500 hover:bg-huarique-600 text-white active:scale-95'
+                  : 'bg-huarique-200 text-huarique-400 cursor-not-allowed'
+              }`}
+            >
+              <Send className="w-4 h-4" />
+              <span>Enviar a Cocina e Imprimir</span>
+            </button>
 
-              <button
-                onClick={handleSendComanda}
-                disabled={cartItems.length === 0}
-                className={`w-full py-3.5 px-4 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-touch transition ${
-                  cartItems.length > 0
-                    ? 'bg-huarique-500 hover:bg-huarique-600 text-white active:scale-95'
-                    : 'bg-huarique-200 text-huarique-400 cursor-not-allowed'
-                }`}
-              >
-                <Send className="w-4 h-4" />
-                <span>Enviar a Cocina e Imprimir</span>
-              </button>
-
-            </div>
           </div>
 
         </div>
