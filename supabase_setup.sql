@@ -1,9 +1,13 @@
 -- ====================================================================
--- SCRIPT DE BASE DE DATOS SUPABASE - HUARIQUE DE CATACAOS (100% INDEPENDIENTE)
--- Copia y pega todo el contenido de este script en el SQL Editor de Supabase
+-- SCRIPT DE BASE DE DATOS SUPABASE - HUARIQUE DE CATACAOS
+-- INSTRUCCIONES: Asegúrate de NO seleccionar ningún texto con el mouse.
+-- Haz clic en el editor, presiona Ctrl+A (Seleccionar todo) y luego RUN.
 -- ====================================================================
 
--- 1. TABLA MOZOS
+-- --------------------------------------------------------------------
+-- BLOQUE 1: CREACIÓN DE TABLAS
+-- --------------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS public.mozos (
     id TEXT PRIMARY KEY,
     nombre TEXT NOT NULL,
@@ -13,7 +17,6 @@ CREATE TABLE IF NOT EXISTS public.mozos (
     creado_en TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. TABLA SALONES
 CREATE TABLE IF NOT EXISTS public.salones (
     id TEXT PRIMARY KEY,
     nombre TEXT NOT NULL,
@@ -22,7 +25,6 @@ CREATE TABLE IF NOT EXISTS public.salones (
     icon TEXT DEFAULT '🏛️'
 );
 
--- 3. TABLA MESAS
 CREATE TABLE IF NOT EXISTS public.mesas (
     id TEXT PRIMARY KEY,
     numero INT NOT NULL,
@@ -34,7 +36,6 @@ CREATE TABLE IF NOT EXISTS public.mesas (
     tiempo_inicio TIMESTAMPTZ
 );
 
--- 4. TABLA PRODUCTOS
 CREATE TABLE IF NOT EXISTS public.productos (
     id TEXT PRIMARY KEY,
     nombre TEXT NOT NULL,
@@ -45,7 +46,6 @@ CREATE TABLE IF NOT EXISTS public.productos (
     activo BOOLEAN DEFAULT TRUE
 );
 
--- 5. TABLA COMANDAS
 CREATE TABLE IF NOT EXISTS public.comandas (
     id TEXT PRIMARY KEY,
     mesa_numero INT NOT NULL,
@@ -58,7 +58,6 @@ CREATE TABLE IF NOT EXISTS public.comandas (
     creado_en TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 6. TABLA DETALLES DE COMANDA
 CREATE TABLE IF NOT EXISTS public.comanda_detalles (
     id BIGSERIAL PRIMARY KEY,
     comanda_id TEXT REFERENCES public.comandas(id) ON DELETE CASCADE,
@@ -69,7 +68,6 @@ CREATE TABLE IF NOT EXISTS public.comanda_detalles (
     nota TEXT
 );
 
--- 7. TABLA INSUMOS (INVENTARIO KARDEX)
 CREATE TABLE IF NOT EXISTS public.insumos (
     id TEXT PRIMARY KEY,
     nombre TEXT NOT NULL,
@@ -81,7 +79,6 @@ CREATE TABLE IF NOT EXISTS public.insumos (
     actualizado_en TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 8. TABLA KARDEX (HISTORIAL DE ENTRADAS Y SALIDAS)
 CREATE TABLE IF NOT EXISTS public.kardex (
     id TEXT PRIMARY KEY,
     insumo_id TEXT REFERENCES public.insumos(id) ON DELETE CASCADE,
@@ -95,22 +92,19 @@ CREATE TABLE IF NOT EXISTS public.kardex (
     fecha TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ====================================================================
--- INSERCIÓN DE DATOS INICIALES (CADA SENTENCIA ES COMPLETA E INDEPENDIENTE)
--- ====================================================================
+-- --------------------------------------------------------------------
+-- BLOQUE 2: DATOS INICIALES (INSERCIONES)
+-- --------------------------------------------------------------------
 
--- MOZOS
 INSERT INTO public.mozos (id, nombre, pin, rol, avatar) VALUES ('m1', 'Juan Pérez', '123456', 'mozo', '👨‍🍳') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.mozos (id, nombre, pin, rol, avatar) VALUES ('m2', 'María Santos', '654321', 'mozo', '👩‍🍳') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.mozos (id, nombre, pin, rol, avatar) VALUES ('m3', 'Carlos Mendoza', '112233', 'mozo', '🧑‍🍳') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.mozos (id, nombre, pin, rol, avatar) VALUES ('admin', 'Dueña (Administración)', '999999', 'duena', '👑') ON CONFLICT (id) DO NOTHING;
 
--- SALONES
 INSERT INTO public.salones (id, nombre, total_mesas, rito, icon) VALUES ('s1', 'Salón Principal Catacaos', 30, 'Mesas 1 a 30', '🏛️') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.salones (id, nombre, total_mesas, rito, icon) VALUES ('s2', 'Salón Chichería & Patio', 25, 'Mesas 31 a 55', '🏺') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.salones (id, nombre, total_mesas, rito, icon) VALUES ('s3', 'Salón Terraza VIP', 25, 'Mesas 56 a 80', '🌿') ON CONFLICT (id) DO NOTHING;
 
--- INSUMOS
 INSERT INTO public.insumos (id, nombre, categoria, stock_actual, unidad, stock_minimo, costo_unitario) VALUES ('ins-1', 'Pollo Entero Fresco', 'Carnes', 45.00, 'Unidades', 15.00, 18.50) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.insumos (id, nombre, categoria, stock_actual, unidad, stock_minimo, costo_unitario) VALUES ('ins-2', 'Carne de Cabrito Norteño', 'Carnes', 22.00, 'Kg', 10.00, 32.00) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.insumos (id, nombre, categoria, stock_actual, unidad, stock_minimo, costo_unitario) VALUES ('ins-3', 'Pescado Mero / Cachema', 'Pescados', 18.00, 'Kg', 8.00, 42.00) ON CONFLICT (id) DO NOTHING;
@@ -120,7 +114,6 @@ INSERT INTO public.insumos (id, nombre, categoria, stock_actual, unidad, stock_m
 INSERT INTO public.insumos (id, nombre, categoria, stock_actual, unidad, stock_minimo, costo_unitario) VALUES ('ins-7', 'Maíz Morado Culle', 'Abarrotes', 25.00, 'Kg', 8.00, 5.00) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.insumos (id, nombre, categoria, stock_actual, unidad, stock_minimo, costo_unitario) VALUES ('ins-8', 'Cerveza Cusqueña 620ml', 'Bebidas', 12.00, 'Cajas', 5.00, 68.00) ON CONFLICT (id) DO NOTHING;
 
--- PRODUCTOS
 INSERT INTO public.productos (id, nombre, categoria, precio, descripcion, imagen) VALUES ('p1', 'Seco de Chabelo Catacaos', 'Entradas', 32.00, 'Plátano verde majado con carne aliñada y aderezo criollo', '🍌') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.productos (id, nombre, categoria, precio, descripcion, imagen) VALUES ('p2', 'Majado de Yuca con Chicharrón', 'Entradas', 28.00, 'Yuca piurana machacada con chicharrón crujiente', '🥔') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.productos (id, nombre, categoria, precio, descripcion, imagen) VALUES ('p3', 'Tamalitos Verdes Catacaos (2 un)', 'Entradas', 16.00, 'Con culantro fresco y salsa criolla piurana', '🌽') ON CONFLICT (id) DO NOTHING;
@@ -132,7 +125,10 @@ INSERT INTO public.productos (id, nombre, categoria, precio, descripcion, imagen
 INSERT INTO public.productos (id, nombre, categoria, precio, descripcion, imagen) VALUES ('p13', 'Chicha Morada de la Casa (Jarra 1.5L)', 'Bebidas', 18.00, 'Maíz morado natural hervido con piña y especias', '🍷') ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.productos (id, nombre, categoria, precio, descripcion, imagen) VALUES ('p14', 'Clarito de Catacaos Tradicional (Jarra 1.5L)', 'Bebidas', 20.00, 'Chicha clarified artesanal piurana', '🍺') ON CONFLICT (id) DO NOTHING;
 
--- HABILITAR SEGURIDAD RLS
+-- --------------------------------------------------------------------
+-- BLOQUE 3: POLÍTICAS DE SEGURIDAD (RLS)
+-- --------------------------------------------------------------------
+
 ALTER TABLE public.mozos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.salones ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.mesas ENABLE ROW LEVEL SECURITY;
