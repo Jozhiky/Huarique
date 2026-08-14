@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { isSupabaseConfigured } from '../lib/supabase';
-import { LayoutGrid, UtensilsCrossed, BarChart3, Boxes, Clock, Database, LogOut, ShieldCheck } from 'lucide-react';
+import { LayoutGrid, Printer, BarChart3, Boxes, Clock, Database, LogOut, Receipt } from 'lucide-react';
 
 export default function HeaderNavigation() {
   const { mozoActivo, activeTab, setActiveTab, logout } = useStore();
@@ -17,18 +17,18 @@ export default function HeaderNavigation() {
     return () => clearInterval(timer);
   }, []);
 
+  const isOwner = mozoActivo?.rol === 'duena';
+
   const allNavItems = [
     { id: 'salones', label: 'Salones & Mesas', icon: LayoutGrid, requiredRole: 'mozo' },
-    { id: 'cocina', label: 'Comandas & Cocina', icon: UtensilsCrossed, requiredRole: 'mozo' },
+    { id: 'cocina', label: 'Historial & Reimpresión', icon: Receipt, requiredRole: 'mozo' },
     { id: 'duena', label: 'Panel Dueña', icon: BarChart3, requiredRole: 'duena' },
     { id: 'inventario', label: 'Insumos / Kardex', icon: Boxes, requiredRole: 'duena' },
   ];
 
-  // Filter navigation items by role
-  const isOwner = mozoActivo?.rol === 'duena';
   const navItems = allNavItems.filter(item => {
-    if (isOwner) return true; // Owner sees all tabs
-    return item.requiredRole === 'mozo'; // Waiter sees only Salones & Cocina
+    if (isOwner) return true;
+    return item.requiredRole === 'mozo';
   });
 
   return (
@@ -55,7 +55,7 @@ export default function HeaderNavigation() {
             </div>
           </div>
 
-          {/* Navigation Tabs (Filtered by Role) */}
+          {/* Navigation Tabs */}
           <nav className="hidden md:flex items-center space-x-1.5 bg-huarique-50 p-1.5 rounded-2xl border border-huarique-100">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -80,15 +80,13 @@ export default function HeaderNavigation() {
           {/* Right Controls: Active Mozo & Clock */}
           <div className="flex items-center space-x-3">
             
-            {/* Live Clock Badge */}
             <div className="hidden lg:flex items-center space-x-1.5 text-xs font-semibold text-huarique-600 bg-huarique-50 px-3 py-2 rounded-xl border border-huarique-100">
               <Clock className="w-3.5 h-3.5 text-huarique-400" />
               <span>{timeStr}</span>
             </div>
 
-            {/* Supabase status badge */}
             <div 
-              title={isSupabaseConfigured ? 'Conectado a Supabase DB' : 'Modo Autónomo Local (Configura Supabase en .env)'}
+              title={isSupabaseConfigured ? 'Conectado a Supabase DB' : 'Modo Autónomo Local'}
               className={`hidden sm:flex items-center space-x-1.5 text-[11px] font-bold px-2.5 py-1.5 rounded-xl border ${
                 isSupabaseConfigured 
                   ? 'bg-sage-50 text-sage-700 border-sage-500/30' 
@@ -99,7 +97,6 @@ export default function HeaderNavigation() {
               <span>{isSupabaseConfigured ? 'Supabase DB' : 'Local DB'}</span>
             </div>
 
-            {/* Active Mozo Pill Button */}
             <div className="flex items-center space-x-2 bg-huarique-50 border border-huarique-200 rounded-2xl p-1.5 pr-2">
               <div className={`w-9 h-9 rounded-xl font-extrabold text-xs flex items-center justify-center shadow-sm ${
                 isOwner ? 'bg-huarique-900 text-white' : 'bg-huarique-500 text-white'
@@ -107,15 +104,14 @@ export default function HeaderNavigation() {
                 {mozoActivo?.iniciales || 'MO'}
               </div>
               <div className="text-left">
-                <p className="text-[10px] uppercase font-bold text-huarique-500 tracking-wider flex items-center space-x-1">
-                  <span>{isOwner ? 'Dueña' : 'Mozo'}</span>
+                <p className="text-[10px] uppercase font-bold text-huarique-500 tracking-wider">
+                  {isOwner ? 'Dueña' : 'Mozo'}
                 </p>
                 <p className="text-xs font-bold text-huarique-900 truncate max-w-[90px]">
                   {mozoActivo?.nombre || 'Mozo'}
                 </p>
               </div>
 
-              {/* Lock / Exit button */}
               <button
                 onClick={logout}
                 title="Cambiar Mozo / Bloquear Terminal"
@@ -129,7 +125,7 @@ export default function HeaderNavigation() {
 
         </div>
 
-        {/* Mobile Navigation Tabs (Filtered by Role) */}
+        {/* Mobile Navigation Tabs */}
         <div className="flex md:hidden items-center justify-between border-t border-huarique-100 py-2 space-x-1">
           {navItems.map((item) => {
             const Icon = item.icon;
