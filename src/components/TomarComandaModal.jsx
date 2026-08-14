@@ -110,63 +110,76 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
       {/* Backdrop overlay click to close */}
       <div className="absolute inset-0" onClick={onClose} />
 
-      {/* Main Modal Box Container (Fixed Height 90vh, flex-col) */}
+      {/* Main Modal Box Container (Fixed Height 90vh) */}
       <div className="bg-white w-full max-w-6xl h-[90vh] max-h-[90vh] rounded-3xl sm:rounded-4xl shadow-soft-lg border border-huarique-100 flex flex-col overflow-hidden relative z-10">
         
-        {/* 1. UNIVERSAL TOP HEADER (Fixed Height flex-shrink-0) */}
-        <div className="lg:hidden bg-white px-4 py-3 border-b border-huarique-100 flex items-center justify-between shadow-sm flex-shrink-0">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-huarique-500 text-white font-black text-base flex items-center justify-center shadow-touch">
+        {/* 1. TABLET HEADER BAR (HIGH READABILITY & BIG TOUCH TARGETS) */}
+        <div className="lg:hidden bg-white px-4 sm:px-6 py-3.5 border-b border-huarique-100 flex items-center justify-between shadow-sm flex-shrink-0">
+          
+          {/* Table Badge & Title */}
+          <div className="flex items-center space-x-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-huarique-500 text-white font-black text-lg flex items-center justify-center shadow-touch flex-shrink-0">
               M{mesa.numero}
             </div>
             <div>
-              <h3 className="text-sm font-black text-huarique-900 leading-tight">
-                Comanda - Mesa {mesa.numero}
+              <h3 className="text-base font-black text-huarique-900 leading-tight">
+                Comanda • Mesa {mesa.numero}
               </h3>
-              <p className="text-[11px] font-bold text-huarique-500">
+              <p className="text-xs font-extrabold text-huarique-600 mt-0.5">
                 Mozo: {mozoActivo?.nombre}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          {/* Navigation Swapper & Big Close Button */}
+          <div className="flex items-center space-x-2.5">
+            
             {/* Tab Swapper */}
-            <div className="flex bg-huarique-100 p-1 rounded-xl">
+            <div className="flex bg-huarique-100 p-1.5 rounded-2xl border border-huarique-200">
               <button
                 onClick={() => setActiveMobileTab('menu')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-black transition ${
-                  activeMobileTab === 'menu' ? 'bg-white text-huarique-900 shadow-sm' : 'text-huarique-600'
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition ${
+                  activeMobileTab === 'menu' 
+                    ? 'bg-white text-huarique-900 shadow-sm' 
+                    : 'text-huarique-600 hover:text-huarique-900'
                 }`}
               >
                 Menú
               </button>
+
               <button
                 onClick={() => setActiveMobileTab('carrito')}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition flex items-center space-x-1.5 ${
-                  activeMobileTab === 'carrito' ? 'bg-white text-huarique-900 shadow-sm' : 'text-huarique-600'
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition flex items-center space-x-2 ${
+                  activeMobileTab === 'carrito' 
+                    ? 'bg-huarique-500 text-white shadow-touch' 
+                    : 'text-huarique-700 hover:text-huarique-900'
                 }`}
               >
                 <span>Pedido</span>
                 {totalItemsCount > 0 && (
-                  <span className="bg-huarique-500 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black">
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-black ${
+                    activeMobileTab === 'carrito' ? 'bg-white text-huarique-900' : 'bg-huarique-500 text-white'
+                  }`}>
                     {totalItemsCount}
                   </span>
                 )}
               </button>
             </div>
 
-            {/* Universal Close Button X */}
+            {/* High-Contrast Close Button X */}
             <button
               onClick={onClose}
               title="Cerrar ventana"
-              className="p-2 text-huarique-500 hover:text-red-600 bg-huarique-100 hover:bg-red-50 rounded-xl transition"
+              className="w-11 h-11 rounded-2xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition flex items-center justify-center active:scale-95 flex-shrink-0"
             >
               <X className="w-6 h-6" />
             </button>
+
           </div>
+
         </div>
 
-        {/* 2. MAIN CONTENT BODY WRAPPER (Takes remaining vertical height) */}
+        {/* 2. MAIN CONTENT BODY WRAPPER */}
         <div className="flex-1 min-h-0 flex flex-col lg:flex-row overflow-hidden">
           
           {/* LEFT PANEL: Dish Menu Catalog */}
@@ -177,7 +190,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
             {/* Desktop Header */}
             <div className="hidden lg:flex items-center justify-between mb-4 flex-shrink-0">
               <div className="flex items-center space-x-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-huarique-500 text-white font-black text-lg flex items-center justify-center shadow-touch">
+                <div className="w-14 h-14 rounded-2xl bg-huarique-500 text-white font-black text-xl flex items-center justify-center shadow-touch">
                   M{mesa.numero}
                 </div>
                 <div>
@@ -194,13 +207,13 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
             {/* Search & Categories Bar */}
             <div className="space-y-3 mb-3 flex-shrink-0">
               <div className="relative">
-                <Search className="w-4 h-4 absolute left-3.5 top-3 text-huarique-400" />
+                <Search className="w-4 h-4 absolute left-4 top-3.5 text-huarique-400" />
                 <input
                   type="text"
                   placeholder="Buscar plato o bebida (ej. Ceviche, Chicha)..."
                   value={searchDish}
                   onChange={(e) => setSearchDish(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-2xl bg-white border border-huarique-200 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-huarique-400 text-huarique-900 shadow-sm"
+                  className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white border border-huarique-200 text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-huarique-400 text-huarique-900 shadow-sm"
                 />
               </div>
 
@@ -209,7 +222,7 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`px-4 py-2 rounded-xl text-xs font-extrabold whitespace-nowrap transition ${
+                    className={`px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition ${
                       activeCategory === cat
                         ? 'bg-huarique-500 text-white shadow-sm'
                         : 'bg-white text-huarique-600 hover:bg-huarique-100 border border-huarique-200'
@@ -227,26 +240,26 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
                 <div
                   key={product.id}
                   onClick={() => handleAddToCart(product)}
-                  className="bg-white p-3.5 rounded-2xl border border-huarique-100 hover:border-huarique-400 shadow-sm hover:shadow-soft transition cursor-pointer flex items-center justify-between group active:scale-[0.98] h-auto"
+                  className="bg-white p-4 rounded-2xl border border-huarique-100 hover:border-huarique-400 shadow-sm hover:shadow-soft transition cursor-pointer flex items-center justify-between group active:scale-[0.98] h-auto"
                 >
-                  <div className="flex items-center space-x-3 flex-1 min-w-0 pr-2">
-                    <div className="w-10 h-10 rounded-xl bg-huarique-50 border border-huarique-100 flex items-center justify-center text-huarique-600 flex-shrink-0">
+                  <div className="flex items-center space-x-3.5 flex-1 min-w-0 pr-2">
+                    <div className="w-11 h-11 rounded-2xl bg-huarique-50 border border-huarique-100 flex items-center justify-center text-huarique-600 flex-shrink-0">
                       <UtensilsCrossed className="w-5 h-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h4 className="text-xs font-extrabold text-huarique-900 truncate group-hover:text-huarique-600 transition">
+                      <h4 className="text-xs sm:text-sm font-extrabold text-huarique-900 truncate group-hover:text-huarique-600 transition">
                         {product.nombre}
                       </h4>
-                      <p className="text-[10px] text-huarique-500 line-clamp-1 mt-0.5">
+                      <p className="text-[11px] text-huarique-500 line-clamp-1 mt-0.5">
                         {product.descripcion}
                       </p>
-                      <p className="text-xs font-black text-huarique-800 mt-1">
+                      <p className="text-xs sm:text-sm font-black text-huarique-800 mt-1">
                         S/ {product.precio.toFixed(2)}
                       </p>
                     </div>
                   </div>
 
-                  <div className="w-8 h-8 rounded-xl bg-huarique-50 group-hover:bg-huarique-500 group-hover:text-white text-huarique-700 flex items-center justify-center font-black text-lg transition shadow-sm flex-shrink-0">
+                  <div className="w-9 h-9 rounded-2xl bg-huarique-50 group-hover:bg-huarique-500 group-hover:text-white text-huarique-700 flex items-center justify-center font-black text-xl transition shadow-sm flex-shrink-0">
                     +
                   </div>
                 </div>
@@ -258,15 +271,15 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
               <div className="lg:hidden pt-3 flex-shrink-0">
                 <button
                   onClick={() => setActiveMobileTab('carrito')}
-                  className="w-full py-3 px-4 rounded-2xl bg-huarique-500 text-white font-extrabold text-xs flex items-center justify-between shadow-touch active:scale-95 transition"
+                  className="w-full py-3.5 px-4 rounded-2xl bg-huarique-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-between shadow-touch active:scale-95 transition"
                 >
                   <div className="flex items-center space-x-2">
-                    <ShoppingBag className="w-4 h-4" />
+                    <ShoppingBag className="w-5 h-5" />
                     <span>Ver Comanda ({totalItemsCount} ítems)</span>
                   </div>
                   <div className="flex items-center space-x-1">
-                    <span className="font-black text-sm">S/ {cartTotal.toFixed(2)}</span>
-                    <ChevronRight className="w-4 h-4" />
+                    <span className="font-black text-base">S/ {cartTotal.toFixed(2)}</span>
+                    <ChevronRight className="w-5 h-5" />
                   </div>
                 </button>
               </div>
@@ -274,8 +287,8 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
 
           </div>
 
-          {/* RIGHT PANEL: Order Cart Summary (Redesigned Legible Layout with Internal Scroll) */}
-          <div className={`w-full lg:w-[400px] flex-col h-full bg-white p-4 sm:p-6 justify-between relative flex-shrink-0 overflow-hidden ${
+          {/* RIGHT PANEL: Order Cart Summary (HIGH READABILITY & TABLET-OPTIMIZED TYPOGRAPHY) */}
+          <div className={`w-full lg:w-[420px] flex-col h-full bg-white p-4 sm:p-6 justify-between relative flex-shrink-0 overflow-hidden ${
             activeMobileTab === 'carrito' ? 'flex' : 'hidden lg:flex'
           }`}>
             
@@ -283,95 +296,95 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
             <button
               onClick={onClose}
               title="Cerrar ventana"
-              className="hidden lg:block absolute top-5 right-5 text-huarique-400 hover:text-red-600 p-2 rounded-2xl hover:bg-red-50 transition"
+              className="hidden lg:flex w-10 h-10 rounded-2xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition items-center justify-center absolute top-5 right-5"
             >
               <X className="w-6 h-6" />
             </button>
 
-            {/* Header Info (Fixed Top) */}
-            <div className="flex-shrink-0 mb-3">
+            {/* Header Info */}
+            <div className="flex-shrink-0 mb-4">
               <div className="flex items-center justify-between">
-                <h4 className="text-base font-black text-huarique-900 flex items-center space-x-2">
-                  <Utensils className="w-4 h-4 text-huarique-500" />
+                <h4 className="text-lg sm:text-xl font-black text-huarique-900 flex items-center space-x-2">
+                  <Utensils className="w-5 h-5 text-huarique-500" />
                   <span>Resumen de Comanda</span>
                 </h4>
-                <span className="text-xs font-extrabold bg-huarique-50 text-huarique-800 px-3 py-1 rounded-full border border-huarique-100">
+                <span className="text-xs sm:text-sm font-black bg-huarique-100 text-huarique-900 px-3.5 py-1.5 rounded-2xl border border-huarique-200">
                   Mesa {mesa.numero}
                 </span>
               </div>
-              <p className="text-xs text-huarique-500 font-semibold mt-1">
-                {totalItemsCount} {totalItemsCount === 1 ? 'ítem agregado' : 'ítems agregados'}
+              <p className="text-xs sm:text-sm text-huarique-600 font-extrabold mt-1">
+                {totalItemsCount} {totalItemsCount === 1 ? 'ítem seleccionado' : 'ítems seleccionados'}
               </p>
             </div>
 
-            {/* Middle Scrollable Items Container (INTERNAL SCROLL, NEVER PUSHES BOTTOM BAR!) */}
-            <div className="flex-1 min-h-0 overflow-y-auto pr-1.5 space-y-3 my-1">
+            {/* Middle Scrollable Items Container */}
+            <div className="flex-1 min-h-0 overflow-y-auto pr-1.5 space-y-3.5 my-1">
               {cartItems.length === 0 ? (
                 <div className="text-center py-12 bg-huarique-50/50 rounded-3xl border border-dashed border-huarique-200 p-6 my-auto">
                   <AlertCircle className="w-10 h-10 mx-auto text-huarique-300 mb-2.5" />
-                  <p className="text-xs font-bold text-huarique-600">
+                  <p className="text-xs sm:text-sm font-bold text-huarique-600">
                     No has agregado platos a la comanda
                   </p>
-                  <p className="text-[11px] text-huarique-400 mt-0.5">
-                    Toca en el menú de la izquierda para agregar platos
+                  <p className="text-xs text-huarique-400 mt-0.5">
+                    Toca en la pestaña "Menú" para seleccionar platos
                   </p>
                 </div>
               ) : (
                 cartItems.map((item, index) => (
                   <div
                     key={`${item.productoId}-${index}`}
-                    className="p-3.5 bg-huarique-50/80 rounded-2xl border border-huarique-100 space-y-2.5 shadow-sm"
+                    className="p-4 bg-huarique-50/80 rounded-3xl border border-huarique-100 space-y-3 shadow-sm"
                   >
-                    {/* Row 1: Dish Name & Item Total */}
+                    {/* Row 1: Dish Name & Price */}
                     <div className="flex items-center justify-between">
                       <span className="text-xs sm:text-sm font-black text-huarique-900 truncate pr-2">
                         {item.nombre}
                       </span>
-                      <span className="text-xs sm:text-sm font-black text-huarique-800 whitespace-nowrap">
+                      <span className="text-xs sm:text-sm font-black text-huarique-900 whitespace-nowrap">
                         S/ {(item.precio * item.cantidad).toFixed(2)}
                       </span>
                     </div>
 
-                    {/* Row 2: Touch Controls (Quantity Stepper, Observation Input, Delete Button) */}
+                    {/* Row 2: Touch Stepper, Observation Input, Delete Button */}
                     <div className="flex items-center space-x-2 pt-1">
                       
-                      {/* Quantity Stepper */}
-                      <div className="flex items-center space-x-1 bg-white rounded-xl border border-huarique-200 p-1 flex-shrink-0">
+                      {/* Touch Stepper */}
+                      <div className="flex items-center space-x-1.5 bg-white rounded-2xl border border-huarique-200 p-1 flex-shrink-0">
                         <button
                           onClick={() => handleUpdateQuantity(index, -1)}
-                          className="w-7 h-7 rounded-lg bg-huarique-100 hover:bg-huarique-200 text-huarique-900 flex items-center justify-center font-bold text-xs active:scale-95 transition"
+                          className="w-8 h-8 rounded-xl bg-huarique-100 hover:bg-huarique-200 text-huarique-900 flex items-center justify-center font-black text-sm active:scale-95 transition"
                         >
-                          <Minus className="w-3.5 h-3.5" />
+                          <Minus className="w-4 h-4" />
                         </button>
-                        <span className="text-xs font-black text-huarique-900 w-5 text-center">
+                        <span className="text-sm font-black text-huarique-900 w-5 text-center">
                           {item.cantidad}
                         </span>
                         <button
                           onClick={() => handleUpdateQuantity(index, 1)}
-                          className="w-7 h-7 rounded-lg bg-huarique-100 hover:bg-huarique-200 text-huarique-900 flex items-center justify-center font-bold text-xs active:scale-95 transition"
+                          className="w-8 h-8 rounded-xl bg-huarique-100 hover:bg-huarique-200 text-huarique-900 flex items-center justify-center font-black text-sm active:scale-95 transition"
                         >
-                          <Plus className="w-3.5 h-3.5" />
+                          <Plus className="w-4 h-4" />
                         </button>
                       </div>
 
-                      {/* Observation Input */}
-                      <div className="flex items-center space-x-1.5 flex-1 min-w-0 bg-white border border-huarique-200 rounded-xl px-2.5 py-1.5">
-                        <MessageSquare className="w-3.5 h-3.5 text-huarique-400 flex-shrink-0" />
+                      {/* Observation Field */}
+                      <div className="flex items-center space-x-1.5 flex-1 min-w-0 bg-white border border-huarique-200 rounded-2xl px-3 py-2">
+                        <MessageSquare className="w-4 h-4 text-huarique-400 flex-shrink-0" />
                         <input
                           type="text"
-                          placeholder="Obs (sin sal, etc)..."
+                          placeholder="Obs (sin ají, bien cocido)..."
                           value={item.nota || ''}
                           onChange={(e) => handleUpdateNote(index, e.target.value)}
-                          className="w-full text-xs bg-transparent focus:outline-none text-huarique-800 font-semibold"
+                          className="w-full text-xs sm:text-sm bg-transparent focus:outline-none text-huarique-900 font-semibold"
                         />
                       </div>
 
                       {/* Delete Button */}
                       <button
                         onClick={() => handleRemoveItem(index)}
-                        className="p-2 text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-xl transition flex-shrink-0"
+                        className="p-2.5 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-2xl transition flex-shrink-0 active:scale-95"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-4.5 h-4.5" />
                       </button>
 
                     </div>
@@ -381,18 +394,18 @@ export default function TomarComandaModal({ mesa, isOpen, onClose }) {
               )}
             </div>
 
-            {/* FIXED BOTTOM ACTIONS BAR (GUARANTEED 100% VISIBLE WITH ZERO OVERFLOW!) */}
-            <div className="flex-shrink-0 pt-3 border-t border-huarique-100 space-y-3 bg-white">
+            {/* FIXED BOTTOM ACTIONS BAR */}
+            <div className="flex-shrink-0 pt-4 border-t border-huarique-100 space-y-3 bg-white">
               
-              <div className="flex items-center justify-between text-sm font-black text-huarique-900 bg-huarique-50 p-3.5 rounded-2xl border border-huarique-100">
+              <div className="flex items-center justify-between text-sm sm:text-base font-black text-huarique-900 bg-huarique-50 p-4 rounded-3xl border border-huarique-100">
                 <span>TOTAL COMANDA:</span>
-                <span className="text-lg sm:text-xl font-black text-huarique-900">S/ {cartTotal.toFixed(2)}</span>
+                <span className="text-xl sm:text-2xl font-black text-huarique-900">S/ {cartTotal.toFixed(2)}</span>
               </div>
 
               <button
                 onClick={handleSendComanda}
                 disabled={cartItems.length === 0}
-                className={`w-full py-4 px-4 rounded-2xl font-extrabold text-sm sm:text-base flex items-center justify-center space-x-2.5 shadow-touch transition ${
+                className={`w-full py-4 px-5 rounded-3xl font-black text-sm sm:text-base flex items-center justify-center space-x-2.5 shadow-touch transition ${
                   cartItems.length > 0
                     ? 'bg-huarique-500 hover:bg-huarique-600 text-white active:scale-95'
                     : 'bg-huarique-200 text-huarique-400 cursor-not-allowed'
