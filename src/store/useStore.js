@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// Initial Mozos (Waiters) - Professional badges without emojis
+// Initial Mozos (Waiters)
 const INITIAL_MOZOS = [
   { id: 'm1', nombre: 'Juan Pérez', pin: '123456', rol: 'mozo', iniciales: 'JP' },
   { id: 'm2', nombre: 'María Santos', pin: '654321', rol: 'mozo', iniciales: 'MS' },
@@ -61,34 +61,25 @@ const generateInitialMesas = () => {
   return mesas;
 };
 
-// Menu Products (Catacaos Specialty) - Clean Professional List
+// Menu Products (Catacaos Specialty)
 const INITIAL_PRODUCTOS = [
-  // Entradas
   { id: 'p1', nombre: 'Seco de Chabelo Catacaos', categoria: 'Entradas', precio: 32.00, descripcion: 'Plátano verde majado con carne aliñada y aderezo criollo' },
   { id: 'p2', nombre: 'Majado de Yuca con Chicharrón', categoria: 'Entradas', precio: 28.00, descripcion: 'Yuca piurana machacada con chicharrón crujiente' },
   { id: 'p3', nombre: 'Tamalitos Verdes Catacaos (2 un)', categoria: 'Entradas', precio: 16.00, descripcion: 'Con culantro fresco y salsa criolla piurana' },
   { id: 'p4', nombre: 'Tequeños de Queso y Cabaña', categoria: 'Entradas', precio: 22.00, descripcion: 'Crujientes rellenos de queso fresco con guacamole' },
-
-  // Ceviches & Mariscadas
   { id: 'p5', nombre: 'Ceviche Especial de Mero', categoria: 'Ceviches', precio: 48.00, descripcion: 'Pesca del día con limón de Chulucanas, ají mochero y zarandaja' },
   { id: 'p6', nombre: 'Ceviche Mixto Norteño', categoria: 'Ceviches', precio: 45.00, descripcion: 'Pescado, mariscos frescos, camote glaseado y cancha' },
   { id: 'p7', nombre: 'Sudado de Cachema entera', categoria: 'Ceviches', precio: 42.00, descripcion: 'Pescado fresco sudado en chicha de jora y tomates' },
-
-  // Platos Criollos & Fondos
   { id: 'p8', nombre: 'Cabrito a la Norteña con Tamal', categoria: 'Fondos', precio: 46.00, descripcion: 'Tierna carne macerada en chicha de jora, frejol y tamal' },
   { id: 'p9', nombre: 'Arroz con Pato a la Chiclayana', categoria: 'Fondos', precio: 44.00, descripcion: 'Pato tierno con arroz al culantro y cerveza negra' },
   { id: 'p10', nombre: 'Pollo a la Brasa Entero + Papas + Ensalada', categoria: 'Fondos', precio: 68.00, descripcion: 'Pollo jugoso marinado estilo Huarique con papas nativas' },
   { id: 'p11', nombre: '1/2 Pollo a la Brasa + Papas', categoria: 'Fondos', precio: 38.00, descripcion: 'Medio pollo dorado con ensalada fresca y salsas' },
   { id: 'p12', nombre: 'Lomo Saltado Especial al Wok', categoria: 'Fondos', precio: 42.00, descripcion: 'Fino lomo salteado con cebolla, tomate y papas crujientes' },
-
-  // Bebidas & Chicha
   { id: 'p13', nombre: 'Chicha Morada de la Casa (Jarra 1.5L)', categoria: 'Bebidas', precio: 18.00, descripcion: 'Maíz morado natural hervido con piña y especias' },
   { id: 'p14', nombre: 'Clarito de Catacaos Tradicional (Jarra 1.5L)', categoria: 'Bebidas', precio: 20.00, descripcion: 'Chicha clarified artesanal piurana' },
   { id: 'p15', nombre: 'Cerveza Cusqueña 620ml', categoria: 'Bebidas', precio: 14.00, descripcion: 'Trigo o Negra muy helada' },
   { id: 'p16', nombre: 'Gaseosa Inka Kola 1.5L', categoria: 'Bebidas', precio: 12.00, descripcion: 'Inka Kola familiar helada' },
   { id: 'p17', nombre: 'Agua Mineral con/sin gas 500ml', categoria: 'Bebidas', precio: 5.00, descripcion: 'Botella personal' },
-
-  // Postres
   { id: 'p18', nombre: 'Natilla Piurana Tradicional', categoria: 'Postres', precio: 12.00, descripcion: 'Elaborada con leche de cabra y chancaca pura' },
   { id: 'p19', nombre: 'Alfajores de Catacaos (Pack 4 un)', categoria: 'Postres', precio: 14.00, descripcion: 'Manjarblanco casero y suave masa hojaldrada' },
 ];
@@ -142,7 +133,7 @@ const INITIAL_COMANDAS = [
   }
 ];
 
-// Initial Insumos (Inventory Items)
+// Initial Insumos
 const INITIAL_INSUMOS = [
   { id: 'ins-1', nombre: 'Pollo Entero Fresco', categoria: 'Carnes', stockActual: 45, unidad: 'Unidades', stockMinimo: 15, costoUnitario: 18.50 },
   { id: 'ins-2', nombre: 'Carne de Cabrito Norteño', categoria: 'Carnes', stockActual: 22, unidad: 'Kg', stockMinimo: 10, costoUnitario: 32.00 },
@@ -154,7 +145,7 @@ const INITIAL_INSUMOS = [
   { id: 'ins-8', nombre: 'Cerveza Cusqueña 620ml', categoria: 'Bebidas', stockActual: 12, unidad: 'Cajas', stockMinimo: 5, costoUnitario: 68.00 },
 ];
 
-// Initial Inventory History (Kardex)
+// Initial Kardex
 const INITIAL_KARDEX = [
   {
     id: 'k-1',
@@ -198,7 +189,8 @@ export const useStore = create(
   persist(
     (set, get) => ({
       mozos: INITIAL_MOZOS,
-      mozoActivo: INITIAL_MOZOS[0],
+      mozoActivo: null, // Require login first!
+      isAuthenticated: false, // Require login first!
       salones: INITIAL_SALONES,
       mesas: generateInitialMesas(),
       productos: INITIAL_PRODUCTOS,
@@ -211,14 +203,16 @@ export const useStore = create(
       mesaSeleccionada: null,
       ticketImprimir: null,
 
-      setMozoActivoByPin: (pin) => {
+      loginWithPin: (pin) => {
         const found = get().mozos.find(m => m.pin === pin);
         if (found) {
-          set({ mozoActivo: found });
+          set({ mozoActivo: found, isAuthenticated: true });
           return { success: true, mozo: found };
         }
-        return { success: false, message: 'PIN incorrecto. Intenta con 123456 (Juan), 654321 (María), 112233 (Carlos) o 999999 (Dueña).' };
+        return { success: false, message: 'PIN incorrecto. Verifica los dígitos asignados.' };
       },
+
+      logout: () => set({ isAuthenticated: false, mozoActivo: null }),
 
       setSalonSeleccionadoId: (id) => set({ salonSeleccionadoId: id }),
       setActiveTab: (tab) => set({ activeTab: tab }),
@@ -230,7 +224,7 @@ export const useStore = create(
         const mesa = state.mesas.find(m => m.id === mesaId);
         const salon = state.salones.find(s => s.id === mesa.salonId);
         
-        if (!mesa || items.length === 0) return null;
+        if (!mesa || items.length === 0 || !state.mozoActivo) return null;
 
         const total = items.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
         
@@ -343,7 +337,7 @@ export const useStore = create(
           motivo: motivo,
           proveedor: proveedor || '-',
           costoTotal: costoNum,
-          usuario: state.mozoActivo.nombre,
+          usuario: state.mozoActivo ? state.mozoActivo.nombre : 'Sistema',
           fecha: new Date().toISOString(),
         };
 
@@ -380,7 +374,7 @@ export const useStore = create(
       }
     }),
     {
-      name: 'huarique-catacaos-storage',
+      name: 'huarique-catacaos-storage-v2',
     }
   )
 );

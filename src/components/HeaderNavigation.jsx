@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { isSupabaseConfigured } from '../lib/supabase';
-import { LayoutGrid, UtensilsCrossed, BarChart3, Boxes, User, Clock, Database, KeyRound, Shield } from 'lucide-react';
+import { LayoutGrid, UtensilsCrossed, BarChart3, Boxes, Clock, Database, LogOut } from 'lucide-react';
 
-export default function HeaderNavigation({ onOpenPinModal }) {
-  const { mozoActivo, activeTab, setActiveTab } = useStore();
+export default function HeaderNavigation() {
+  const { mozoActivo, activeTab, setActiveTab, logout } = useStore();
   const [timeStr, setTimeStr] = useState('');
 
   useEffect(() => {
@@ -91,25 +91,28 @@ export default function HeaderNavigation({ onOpenPinModal }) {
             </div>
 
             {/* Active Mozo Pill Button */}
-            <button
-              onClick={onOpenPinModal}
-              className="flex items-center space-x-2.5 bg-huarique-50 hover:bg-huarique-100 border border-huarique-200 rounded-2xl p-1.5 pr-3.5 transition group"
-            >
-              <div className="w-9 h-9 rounded-xl bg-huarique-500 text-white font-extrabold text-xs flex items-center justify-center shadow-sm group-hover:scale-105 transition">
+            <div className="flex items-center space-x-2 bg-huarique-50 border border-huarique-200 rounded-2xl p-1.5 pr-2">
+              <div className="w-9 h-9 rounded-xl bg-huarique-500 text-white font-extrabold text-xs flex items-center justify-center shadow-sm">
                 {mozoActivo?.iniciales || 'MO'}
               </div>
               <div className="text-left">
-                <div className="flex items-center space-x-1">
-                  <span className="text-[10px] uppercase font-bold text-huarique-500 tracking-wider">
-                    {mozoActivo?.rol === 'duena' ? 'Dueña' : 'Mozo'}
-                  </span>
-                  <KeyRound className="w-3 h-3 text-huarique-400" />
-                </div>
-                <p className="text-xs font-bold text-huarique-900 truncate max-w-[100px]">
+                <p className="text-[10px] uppercase font-bold text-huarique-500 tracking-wider">
+                  {mozoActivo?.rol === 'duena' ? 'Dueña' : 'Mozo'}
+                </p>
+                <p className="text-xs font-bold text-huarique-900 truncate max-w-[90px]">
                   {mozoActivo?.nombre || 'Mozo'}
                 </p>
               </div>
-            </button>
+
+              {/* Lock / Exit button */}
+              <button
+                onClick={logout}
+                title="Cambiar Mozo / Bloquear Terminal"
+                className="p-2 text-huarique-400 hover:text-red-600 rounded-xl hover:bg-white transition ml-1"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
 
           </div>
 

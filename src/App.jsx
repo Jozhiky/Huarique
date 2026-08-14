@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useStore } from './store/useStore';
+import LoginScreen from './components/LoginScreen';
 import HeaderNavigation from './components/HeaderNavigation';
-import PinLoginModal from './components/PinLoginModal';
 import SalonesMap from './components/SalonesMap';
 import TomarComandaModal from './components/TomarComandaModal';
 import CocinaDisplay from './components/CocinaDisplay';
@@ -10,14 +10,18 @@ import DueñaDashboard from './components/DueñaDashboard';
 import InventarioKardex from './components/InventarioKardex';
 
 export default function App() {
-  const { activeTab, mesaSeleccionada, setMesaSeleccionada } = useStore();
-  const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+  const { isAuthenticated, mozoActivo, activeTab, mesaSeleccionada, setMesaSeleccionada } = useStore();
+
+  // Enforce LoginScreen as the FIRST screen!
+  if (!isAuthenticated || !mozoActivo) {
+    return <LoginScreen />;
+  }
 
   return (
     <div className="min-h-screen bg-huarique-50 flex flex-col font-sans">
       
       {/* Header bar */}
-      <HeaderNavigation onOpenPinModal={() => setIsPinModalOpen(true)} />
+      <HeaderNavigation />
 
       {/* Main Content Body */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
@@ -47,11 +51,6 @@ export default function App() {
       </footer>
 
       {/* Modals */}
-      <PinLoginModal
-        isOpen={isPinModalOpen}
-        onClose={() => setIsPinModalOpen(false)}
-      />
-
       <TomarComandaModal
         mesa={mesaSeleccionada}
         isOpen={Boolean(mesaSeleccionada)}
