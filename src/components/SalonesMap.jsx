@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Search, PlusCircle, Receipt, CheckCircle, Clock, Users, Building2, Wine, Trees, ArrowLeft, ArrowRight, Plus } from 'lucide-react';
 
 export default function SalonesMap({ onSelectMesaForComanda }) {
   const { salones, mesas, salonSeleccionadoId, setSalonSeleccionadoId, cobrarMesa, mozoActivo } = useStore();
@@ -22,14 +22,14 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   const getTimeElapsedStr = (isoTime) => {
     if (!isoTime) return '';
     const minutes = Math.floor((Date.now() - new Date(isoTime).getTime()) / 60000);
-    if (minutes < 1) return 'Hace un momento';
-    if (minutes < 60) return `Hace ${minutes} min`;
+    if (minutes < 1) return 'Recién';
+    if (minutes < 60) return `${minutes}m`;
     const hours = Math.floor(minutes / 60);
-    return `Hace ${hours}h ${minutes % 60}m`;
+    return `${hours}h ${minutes % 60}m`;
   };
 
   // =========================================================================
-  // PASO 1: SELECCIÓN DE SALONES - DUAL DESIGN PARA PORTRAIT (712px) Y LANDSCAPE
+  // PASO 1: SELECCIÓN COMPACTA DE SALONES (0 SCROLL)
   // =========================================================================
   if (!salonSeleccionadoId) {
     return (
@@ -51,7 +51,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
           </span>
         </div>
 
-        {/* 3 Salones Cards (Optimized for Galaxy Tab S4 Portrait 712px & Landscape) */}
+        {/* 3 Salones Cards Grid (Optimized for all Tablets & Phones) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {salones.map((salon) => {
             const salonMesas = mesas.filter(m => m.salonId === salon.id);
@@ -65,7 +65,6 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                 onClick={() => setSalonSeleccionadoId(salon.id)}
                 className="bg-white rounded-3xl border border-huarique-100 p-4 shadow-soft hover:shadow-soft-lg transition-all duration-200 cursor-pointer flex flex-col justify-between group border-2 hover:border-huarique-500 active:scale-[0.98]"
               >
-                {/* Card Main Info */}
                 <div>
                   
                   {/* Icon & Mesas badge */}
@@ -120,7 +119,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   }
 
   // =========================================================================
-  // PASO 2: MAPA DE MESAS DEL SALÓN SELECCIONADO
+  // PASO 2: MAPA DE MESAS - DISEÑO COMPACTO Y CONSISTENTE (UNIFORM TILE CARDS)
   // =========================================================================
   const currentSalon = salones.find(s => s.id === salonSeleccionadoId) || salones[0];
   const salonMesas = mesas.filter(m => m.salonId === currentSalon.id);
@@ -140,49 +139,43 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   const totalRecaudadoSalon = salonMesas.reduce((sum, m) => sum + (m.totalActual || 0), 0);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       
-      {/* Header Bar with Back Button & Salon Info */}
-      <div className="bg-white p-3.5 sm:p-4 rounded-3xl border border-huarique-100 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        
-        {/* Back Button & Salon Title */}
-        <div className="flex items-center space-x-3">
+      {/* Top Salon Header */}
+      <div className="bg-white p-3 rounded-2xl border border-huarique-100 shadow-soft flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center space-x-2.5">
           <button
             onClick={() => setSalonSeleccionadoId(null)}
-            className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-huarique-100 hover:bg-huarique-200 text-huarique-900 font-extrabold text-xs transition active:scale-95 border border-huarique-200"
+            className="flex items-center space-x-1 px-3 py-2 rounded-xl bg-huarique-100 hover:bg-huarique-200 text-huarique-900 font-extrabold text-xs transition active:scale-95 border border-huarique-200"
           >
             <ArrowLeft className="w-4 h-4 text-huarique-700" />
-            <span>Volver a Salones</span>
+            <span>Volver</span>
           </button>
 
           <div>
-            <h2 className="text-base sm:text-lg font-black text-huarique-900 leading-tight">
+            <h2 className="text-sm sm:text-base font-black text-huarique-900 leading-tight">
               {currentSalon.nombre}
             </h2>
-            <p className="text-[11px] font-semibold text-huarique-500">
+            <p className="text-[10px] font-semibold text-huarique-500">
               {currentSalon.rito} ({currentSalon.totalMesas} mesas)
             </p>
           </div>
         </div>
 
-        {/* Consumo Acumulado */}
-        <div className="flex items-center space-x-3 bg-huarique-50 px-3.5 py-2 rounded-2xl border border-huarique-100 text-xs font-bold self-start sm:self-auto">
-          <div>
-            <span className="text-huarique-500">Consumo:</span>
-            <span className="ml-1.5 text-sm font-black text-huarique-900">S/ {totalRecaudadoSalon.toFixed(2)}</span>
-          </div>
+        <div className="flex items-center space-x-2 bg-huarique-50 px-3 py-1.5 rounded-xl border border-huarique-100 text-xs font-bold">
+          <span className="text-huarique-500 text-[11px]">Consumo:</span>
+          <span className="text-xs font-black text-huarique-900">S/ {totalRecaudadoSalon.toFixed(2)}</span>
         </div>
-
       </div>
 
-      {/* Filter and Search Toolbar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Filter and Search Bar */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
         
-        {/* Status Pills */}
-        <div className="flex items-center space-x-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+        {/* Status Filters */}
+        <div className="flex items-center space-x-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
           <button
             onClick={() => setFilterEstado('todos')}
-            className={`px-3 py-2 rounded-xl text-xs font-extrabold transition whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition whitespace-nowrap ${
               filterEstado === 'todos'
                 ? 'bg-huarique-900 text-white shadow-sm'
                 : 'bg-white text-huarique-600 hover:bg-huarique-100 border border-huarique-200'
@@ -193,7 +186,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
           
           <button
             onClick={() => setFilterEstado('libre')}
-            className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-extrabold transition whitespace-nowrap ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold transition whitespace-nowrap ${
               filterEstado === 'libre'
                 ? 'bg-sage-500 text-white shadow-sm'
                 : 'bg-sage-50 text-sage-700 border border-sage-500/30 hover:bg-sage-100'
@@ -205,7 +198,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
 
           <button
             onClick={() => setFilterEstado('ocupada')}
-            className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-extrabold transition whitespace-nowrap ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold transition whitespace-nowrap ${
               filterEstado === 'ocupada'
                 ? 'bg-amber-500 text-white shadow-sm'
                 : 'bg-amber-50 text-amber-700 border border-amber-500/30 hover:bg-amber-100'
@@ -217,33 +210,33 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
 
           <button
             onClick={() => setFilterEstado('por_pagar')}
-            className={`flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-extrabold transition whitespace-nowrap ${
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold transition whitespace-nowrap ${
               filterEstado === 'por_pagar'
                 ? 'bg-terracotta-500 text-white shadow-sm'
                 : 'bg-terracotta-50 text-terracotta-700 border border-terracotta-500/30 hover:bg-terracotta-100'
             }`}
           >
             <span className="w-2 h-2 rounded-full bg-terracotta-500"></span>
-            <span>Por Pagar ({totalPorPagar})</span>
+            <span>Cobrar ({totalPorPagar})</span>
           </button>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative w-full sm:w-64">
-          <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-huarique-400" />
+        {/* Search Input */}
+        <div className="relative w-full sm:w-56">
+          <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-huarique-400" />
           <input
             type="text"
             placeholder="Buscar mesa..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 rounded-xl bg-white border border-huarique-200 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-huarique-400 text-huarique-900 shadow-sm"
+            className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-white border border-huarique-200 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-huarique-400 text-huarique-900 shadow-sm"
           />
         </div>
 
       </div>
 
-      {/* Mesas Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5">
+      {/* Mesas Cards Grid (High Density Tile Layout for Tablets & Mobiles) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
         {filteredMesas.map((mesa) => {
           const isLibre = mesa.estado === 'libre';
           const isOcupada = mesa.estado === 'ocupada';
@@ -251,96 +244,93 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
           return (
             <div
               key={mesa.id}
-              className={`group relative rounded-3xl p-3.5 transition-all duration-200 border flex flex-col justify-between hover:shadow-soft ${
+              className={`rounded-2xl p-3 border transition-all duration-200 flex flex-col justify-between hover:shadow-soft text-left ${
                 isLibre
-                  ? 'bg-white border-sage-500/20 hover:border-sage-500/50'
+                  ? 'bg-white border-sage-200 hover:border-sage-500'
                   : isOcupada
-                  ? 'bg-amber-50/50 border-amber-500/40 hover:border-amber-500'
-                  : 'bg-terracotta-50/60 border-terracotta-500/40 hover:border-terracotta-500'
+                  ? 'bg-amber-50/70 border-amber-300 hover:border-amber-500'
+                  : 'bg-terracotta-50/70 border-terracotta-300 hover:border-terracotta-500'
               }`}
             >
               
-              <div className="flex items-center justify-between mb-2">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-base shadow-sm transition ${
+              {/* Tile Top Row: Table Badge & Capacity */}
+              <div className="flex items-center justify-between mb-1.5">
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs shadow-sm ${
                   isLibre
-                    ? 'bg-sage-100 text-sage-700'
+                    ? 'bg-sage-100 text-sage-800 border border-sage-200'
                     : isOcupada
-                    ? 'bg-amber-500 text-white shadow-touch'
-                    : 'bg-terracotta-500 text-white shadow-touch'
+                    ? 'bg-amber-500 text-white'
+                    : 'bg-terracotta-500 text-white'
                 }`}>
                   M{mesa.numero}
                 </div>
 
-                <div className="flex items-center space-x-1 text-[10px] font-bold text-huarique-600 bg-huarique-50 px-2 py-1 rounded-lg border border-huarique-100">
+                <div className="flex items-center space-x-1 text-[10px] font-bold text-huarique-500 bg-huarique-50 px-1.5 py-0.5 rounded-lg border border-huarique-100">
                   <Users className="w-3 h-3 text-huarique-400" />
-                  <span>{mesa.capacidad} p.</span>
+                  <span>{mesa.capacidad}p</span>
                 </div>
               </div>
 
-              <div className="space-y-1 my-1.5">
-                <div className="flex items-center justify-between">
-                  <span className={`text-[9px] uppercase font-black tracking-wider px-2 py-0.5 rounded-full ${
-                    isLibre
-                      ? 'bg-sage-100 text-sage-700'
-                      : isOcupada
-                      ? 'bg-amber-100 text-amber-800'
-                      : 'bg-terracotta-100 text-terracotta-800'
-                  }`}>
-                    {isLibre ? 'Libre' : isOcupada ? 'Ocupada' : 'Por Pagar'}
+              {/* Tile Middle Info: Status & Price */}
+              <div className="my-1 space-y-1 min-h-[38px] flex flex-col justify-center">
+                {isLibre ? (
+                  <span className="inline-block text-[9px] uppercase font-black tracking-wider px-2 py-0.5 rounded-md bg-sage-100 text-sage-700 w-fit">
+                    LIBRE
                   </span>
-                  
-                  {!isLibre && mesa.tiempoInicio && (
-                    <span className="text-[10px] text-huarique-500 font-semibold flex items-center space-x-1">
-                      <Clock className="w-3 h-3 text-huarique-400" />
-                      <span>{getTimeElapsedStr(mesa.tiempoInicio)}</span>
-                    </span>
-                  )}
-                </div>
-
-                {!isLibre && (
-                  <div className="pt-1">
-                    <p className="text-[11px] text-huarique-500 font-semibold">Consumo:</p>
-                    <p className="text-base font-black text-huarique-900">
+                ) : (
+                  <div>
+                    <div className="flex items-center justify-between text-[9px] font-extrabold">
+                      <span className={`uppercase px-1.5 py-0.5 rounded ${
+                        isOcupada ? 'bg-amber-100 text-amber-800' : 'bg-terracotta-100 text-terracotta-800'
+                      }`}>
+                        {isOcupada ? 'OCUPADA' : 'POR PAGAR'}
+                      </span>
+                      {mesa.tiempoInicio && (
+                        <span className="text-huarique-500 flex items-center space-x-0.5">
+                          <Clock className="w-2.5 h-2.5" />
+                          <span>{getTimeElapsedStr(mesa.tiempoInicio)}</span>
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs font-black text-huarique-900 mt-0.5">
                       S/ {mesa.totalActual.toFixed(2)}
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="pt-2.5 border-t border-huarique-100/80 flex flex-col gap-1.5">
-                <button
-                  onClick={() => onSelectMesaForComanda(mesa)}
-                  className={`w-full py-2.5 px-3 rounded-xl font-extrabold text-xs flex items-center justify-center space-x-1.5 transition active:scale-95 ${
-                    isLibre
-                      ? 'bg-sage-500 hover:bg-sage-600 text-white shadow-touch'
-                      : 'bg-huarique-500 hover:bg-huarique-600 text-white shadow-touch'
-                  }`}
-                >
-                  {isLibre ? (
-                    <>
-                      <PlusCircle className="w-3.5 h-3.5" />
-                      <span>Tomar Pedido</span>
-                    </>
-                  ) : (
-                    <>
-                      <Receipt className="w-3.5 h-3.5" />
-                      <span>Ver / Agregar</span>
-                    </>
-                  )}
-                </button>
-
-                {!isLibre && (
+              {/* Tile Bottom Action Buttons */}
+              <div className="pt-2 border-t border-huarique-100/80">
+                {isLibre ? (
                   <button
-                    onClick={() => {
-                      if (confirm(`¿Desear cobrar y liberar la Mesa ${mesa.numero} (Total: S/ ${mesa.totalActual.toFixed(2)})?`)) {
-                        cobrarMesa(mesa.id);
-                      }
-                    }}
-                    className="w-full py-1.5 px-2 rounded-xl font-bold text-[10px] bg-huarique-100 hover:bg-huarique-200 text-huarique-800 transition flex items-center justify-center space-x-1"
+                    onClick={() => onSelectMesaForComanda(mesa)}
+                    className="w-full py-2 px-2 rounded-xl font-extrabold text-xs bg-sage-500 hover:bg-sage-600 active:scale-95 text-white shadow-touch transition flex items-center justify-center space-x-1"
                   >
-                    <CheckCircle className="w-3 h-3 text-sage-600" />
-                    <span>Cobrar y Liberar</span>
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Tomar Pedido</span>
                   </button>
+                ) : (
+                  <div className="grid grid-cols-1 gap-1">
+                    <button
+                      onClick={() => onSelectMesaForComanda(mesa)}
+                      className="w-full py-1.5 px-2 rounded-xl font-extrabold text-[11px] bg-huarique-500 hover:bg-huarique-600 active:scale-95 text-white transition flex items-center justify-center space-x-1 shadow-sm"
+                    >
+                      <Receipt className="w-3 h-3" />
+                      <span>Ver / Agregar</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        if (confirm(`¿Desear cobrar y liberar la Mesa ${mesa.numero} (Total: S/ ${mesa.totalActual.toFixed(2)})?`)) {
+                          cobrarMesa(mesa.id);
+                        }
+                      }}
+                      className="w-full py-1 px-2 rounded-lg font-bold text-[10px] bg-huarique-100 hover:bg-huarique-200 text-huarique-800 transition flex items-center justify-center space-x-1"
+                    >
+                      <CheckCircle className="w-3 h-3 text-sage-600" />
+                      <span>Cobrar</span>
+                    </button>
+                  </div>
                 )}
               </div>
 
