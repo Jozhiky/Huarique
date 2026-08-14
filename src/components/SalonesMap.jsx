@@ -29,7 +29,7 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
   };
 
   // =========================================================================
-  // PASO 1: SELECCIÓN COMPACTA DE SALONES (0 SCROLL)
+  // PASO 1: SELECCIÓN DE SALONES - DISEÑO AMPLIO EN 2 COLUMNAS (SIN TRASLAPES)
   // =========================================================================
   if (!salonSeleccionadoId) {
     return (
@@ -51,9 +51,9 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
           </span>
         </div>
 
-        {/* 3 Salones Cards Grid (Optimized for all Tablets & Phones) */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-          {salones.map((salon) => {
+        {/* 3 Salones Cards Grid (2 Columns on Tablets for maximum width & zero text collisions) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          {salones.map((salon, index) => {
             const salonMesas = mesas.filter(m => m.salonId === salon.id);
             const totalLibres = salonMesas.filter(m => m.estado === 'libre').length;
             const totalOcupadas = salonMesas.filter(m => m.estado === 'ocupada').length;
@@ -63,16 +63,18 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
               <div
                 key={salon.id}
                 onClick={() => setSalonSeleccionadoId(salon.id)}
-                className="bg-white rounded-3xl sm:rounded-4xl border border-huarique-100 p-5 sm:p-6 shadow-soft hover:shadow-soft-lg transition-all duration-200 cursor-pointer flex flex-col justify-between group border-2 hover:border-huarique-500 active:scale-[0.98]"
+                className={`bg-white rounded-3xl sm:rounded-4xl border border-huarique-100 p-5 sm:p-6 shadow-soft hover:shadow-soft-lg transition-all duration-200 cursor-pointer flex flex-col justify-between group border-2 hover:border-huarique-500 active:scale-[0.98] ${
+                  index === 2 ? 'sm:col-span-2 lg:col-span-1' : ''
+                }`}
               >
                 <div>
                   
                   {/* Icon & Mesas badge */}
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-2xl bg-huarique-50 p-2.5 border border-huarique-200 flex items-center justify-center group-hover:bg-huarique-500 group-hover:text-white transition shadow-sm">
                       {getSalonIcon(salon.iconType)}
                     </div>
-                    <span className="px-3 py-1 rounded-full text-xs font-black bg-huarique-50 text-huarique-800 border border-huarique-100">
+                    <span className="px-3.5 py-1 rounded-full text-xs font-black bg-huarique-50 text-huarique-900 border border-huarique-200">
                       {salon.totalMesas} Mesas
                     </span>
                   </div>
@@ -85,19 +87,21 @@ export default function SalonesMap({ onSelectMesaForComanda }) {
                     {salon.rito}
                   </p>
 
-                  {/* Status Pills */}
-                  <div className="grid grid-cols-3 gap-2 my-3.5 p-2.5 bg-huarique-50/80 rounded-2xl border border-huarique-100 text-center text-xs">
-                    <div>
-                      <span className="block text-sm sm:text-base font-black text-sage-600">{totalLibres}</span>
-                      <span className="text-[10px] sm:text-xs font-extrabold text-huarique-500 uppercase">Libres</span>
+                  {/* Status Pills (Collision-Free Spacing) */}
+                  <div className="flex items-center justify-between gap-2 my-4 p-3 bg-huarique-50/80 rounded-2xl border border-huarique-100 text-center">
+                    <div className="flex-1">
+                      <span className="block text-base sm:text-lg font-black text-sage-600">{totalLibres}</span>
+                      <span className="text-[10px] sm:text-xs font-extrabold text-huarique-500 uppercase tracking-wider">Libres</span>
                     </div>
-                    <div>
-                      <span className="block text-sm sm:text-base font-black text-amber-600">{totalOcupadas}</span>
-                      <span className="text-[10px] sm:text-xs font-extrabold text-huarique-500 uppercase">Ocupadas</span>
+                    <div className="w-px h-8 bg-huarique-200"></div>
+                    <div className="flex-1">
+                      <span className="block text-base sm:text-lg font-black text-amber-600">{totalOcupadas}</span>
+                      <span className="text-[10px] sm:text-xs font-extrabold text-huarique-500 uppercase tracking-wider">Ocupadas</span>
                     </div>
-                    <div>
-                      <span className="block text-sm sm:text-base font-black text-terracotta-600">{totalPorPagar}</span>
-                      <span className="text-[10px] sm:text-xs font-extrabold text-huarique-500 uppercase">Cobrar</span>
+                    <div className="w-px h-8 bg-huarique-200"></div>
+                    <div className="flex-1">
+                      <span className="block text-base sm:text-lg font-black text-terracotta-600">{totalPorPagar}</span>
+                      <span className="text-[10px] sm:text-xs font-extrabold text-huarique-500 uppercase tracking-wider">Cobrar</span>
                     </div>
                   </div>
 
